@@ -1,0 +1,147 @@
+table {
+  width: 100%;
+}
+@media print {
+  .doNotPrint {
+    display: none !important;
+  }
+}
+.calendar {
+  height: 31px;
+  border: 0;
+  background-color: transparent;
+  font-size: 15px;
+  width: 175px;
+  border-bottom: 1px solid grey;
+  outline: none;
+  cursor: pointer;
+  margin-right: 15px;
+}
+th {
+  background-color: #333333 !important;
+  color: white !important;
+}
+td:last-child {
+  width: 40px !important;
+}
+tr {
+  height: 35px !important;
+}
+h3:first-child {
+  width: 660px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.options-ctn {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.options {
+  float: right;
+}
+
+.csv-button {
+  width: 200px;
+  float: left;
+}
+
+button {
+  float: right;
+  width: 80px;
+  margin-right: 10px;
+  background-color: #ffcc00;
+}
+
+.icon-detalhes {
+  cursor: pointer;
+}
+h2 {
+  font-weight: bold;
+  color: #6b6b6b;
+}
+h3,
+h4 {
+  margin: 10px 0;
+}
+
+.option-ctn {
+  margin-bottom: 20px;
+  height: 30px;
+}
+
+.busca-container {
+  float: right;
+  display: flex;
+}
+
+.recibo {
+  width: 550px;
+  height: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  background-color: #fff;
+  padding: 20px 60px;
+  position: relative;
+  margin-top: 35px;
+  margin-bottom: 300px;
+}
+
+.recibo-container {
+}
+td {
+  cursor: pointer;
+}
+.links-ctn {
+  display: flex;
+  justify-content: space-between;
+  margin: 40px 0 20px 0;
+}
+
+.emissao-ctn {
+  display: flex;
+  div {
+    width: 50%;
+    height: 140px;
+  }
+}
+
+.back {
+  cursor: pointer;
+}
+
+.back-label {
+  vertical-align: super;
+}
+.circle {
+  color: #7fd47f;
+
+  &.info {
+    color: rgb(238, 105, 105);
+  }
+}
+
+.loader {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  background-color: #ffffff4d;
+  pointer-events: none;
+  z-index: 3;
+}
+
+strong {
+  font-weight: bold;
+}
+
+.md-drppicker .btn {
+  border-color: #ffca00 !important;
+}

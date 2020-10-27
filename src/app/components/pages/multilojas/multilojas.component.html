@@ -1,0 +1,117 @@
+<div *ngIf="!showAddMultiloja" class="main-container-dft">
+    <h1>Multilojas</h1>
+    <div *ngIf="!showLoader && lojas.length == 0 " class="vazio-ctn">
+        <h1>Nenhuma Loja Encontrada</h1>
+    </div>
+    <div class="card-container">
+        <div *ngFor="let loja of lojas; let i = index" class="card">
+            <div class="card-header">
+                <div (click)="setUnidade(loja)" class="select-container">
+                    <mat-icon *ngIf="lojaEmUso == loja.id" class="circle">check_circle</mat-icon>
+                    <h3 *ngIf="lojaEmUso == loja.id" class="use">Em uso</h3>
+                    <div *ngIf="lojaEmUso != loja.id" class="circle disabled"></div>
+                </div>
+                <h3 class="card-title">{{loja.nome}} <span *ngIf="loja.matriz">(Matriz)</span></h3>
+            </div>
+            <div class="card-body">
+                <div class="item">
+                    <h3>Nome</h3>
+                    <h4>{{loja.nome}}</h4>
+                </div>
+                <div class="item">
+                    <h3>Telefone (loja)</h3>
+                    <h4>{{loja.telefone || ''}}</h4>
+                </div>
+                <div class="item">
+                    <h3>Responsável</h3>
+                    <h4>{{loja.responsavelNome}}</h4>
+                </div>
+                <div class="item">
+                    <h3>Telefone Responsável</h3>
+                    <h4>{{loja.responsavelTelefone}}</h4>
+                </div>
+                <div class="item">
+                    <h3>Endereço</h3>
+                    <h4>{{loja.residenciaRua + ', '+ loja.residenciaNumero + ', '+ loja.residenciaBairro + ', '+
+                        loja.residenciaCidade + ' - '+ loja.residenciaEstado}}</h4>
+                </div>
+                <div class="item">
+                    <h3>Precificação</h3>
+                    <h4 *ngIf="loja.pedidoPrecificacao.tipo == 1">Por Raio</h4>
+                    <h4 *ngIf="loja.pedidoPrecificacao.tipo == 2">Por Quilometragem</h4>
+                    <h4 *ngIf="loja.pedidoPrecificacao.tipo == 3">Valor Fixo</h4>
+                </div>
+            </div>
+            <button *ngIf="isUserMatriz && !loja.matriz" (click)="removerUnidade(loja)" mat-button
+                class="remover">Remover</button>
+        </div>
+        <div (click)="setMultilojaView()" class="card">
+            <div class="card-header">
+                <h3 class="card-title"> Nova Unidade</h3>
+            </div>
+            <div class="card-body add">
+                <img src="assets/img/nova-entrega.png" alt="">
+                Clique e adicione uma unidade
+            </div>
+        </div>
+    </div>
+</div>
+
+<div *ngIf="showAddMultiloja" class="nova-unidade-ctn">
+    <span class="voltar">
+        <mat-icon (click)="setMultilojaView()">keyboard_backspace</mat-icon><strong class="back-label">Voltar</strong>
+    </span>
+    <nova-unidade (setMultilojaView)="setMultilojaView()"></nova-unidade>
+</div>
+
+<!-- MODAL -->
+<div [ngClass]="{'showOverlay': showModal}" class="overlay">
+    <div class="modal">
+        <form [formGroup]="adressForm" class="addressForm">
+            <h1>Endereço de retirada dos pedidos</h1>
+            <!-- <h2>Fique tranquilo, você vai poder alterar quando quiser</h2> -->
+            <ng-template>Endereço da Empresa</ng-template>
+            <div>
+
+                <div *ngIf="address?.length > 0" class="addrres-box">
+                    <h4 *ngFor="let address of address">{{address.rua + ' ' + address.numero + ' '  
+                        + address.bairro + ', ' + address.cidade + ', ' + address.estado}}
+                        <br>
+                        <h4 *ngIf="address.cep">CEP: {{address.cep}}</h4>
+                        <span (click)="removeAddress(address)">Remover</span>
+                    </h4>
+                    <br>
+                </div>
+
+                <mat-form-field class="lg-input">
+                    <mat-label>Pesquise o Endereço (Com número)</mat-label>
+                    <input id="endereco1" matInput formControlName="endereco"
+                        placeholder="Ex: Av Nove de Julho, 1090, São Paulo">
+                </mat-form-field>
+                <mat-form-field>
+                    <mat-label>Complemento</mat-label>
+                    <input matInput formControlName="complemento" placeholder="Ex: loja 02">
+                </mat-form-field>
+
+                <mat-form-field [ngClass]="{'hide': !inputCep}">
+                    <mat-label>CEP</mat-label>
+                    <input matInput formControlName="cep" placeholder="Ex: loja 02">
+                    <mat-error *ngIf="adressForm.controls.cep?.errors?.required">Digite o Cep</mat-error>
+                </mat-form-field>
+                <br>
+            </div>
+
+            <br>
+            <div class="buttons-container">
+                <button (click)="setModalView()" mat-button>Cancelar</button>
+                <button mat-button [disabled]="adressForm.status == 'INVALID'">Salvar</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+
+<div *ngIf="showLoader" class="loader-ctn loader">
+    <mat-spinner></mat-spinner>
+</div>

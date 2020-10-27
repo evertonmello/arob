@@ -1,0 +1,113 @@
+<div class="main-container-dft">
+  <div>
+    <h1>Usuarios</h1>
+  </div>
+
+  <div class="lista">
+    <div class="filters">
+      <div>
+        <h3 *ngIf="totalListados"> <span class="total"></span>{{totalListados}} Usuarios Listados </h3>
+      </div>
+
+      <div>
+
+        <mat-form-field>
+          <mat-label>Nome</mat-label>
+          <input matInput [(ngModel)]="nomeInputed" (blur)="buscaFiltrada()" name="nome">
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>CPF/CNPJ</mat-label>
+          <input matInput [(ngModel)]="cpfInputed" (blur)="buscaFiltrada()" name="cpf">
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Ramo do Estabelecimento</mat-label>
+          <mat-select [(ngModel)]="ramoSelected" (selectionChange)="buscaFiltrada()" name="ramo">
+            <mat-option *ngFor="let ramo of ramos" [value]="ramo.value">
+              {{ramo.label}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Selecione o Periodo</mat-label>
+          <mat-select [(ngModel)]="periodoSelected" (selectionChange)="buscaFiltrada()" name="perido">
+            <mat-option *ngFor="let periodo of periodos" [value]="periodo.value">
+              {{periodo.label}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+      </div>
+
+    </div>
+    <div class="list-container">
+      <table *ngIf="!showLoader" mat-table [dataSource]="usuarios" class="mat-elevation-z8 historico usuarios">
+
+        <ng-container matColumnDef="usuarioId">
+          <th mat-header-cell *matHeaderCellDef style="width: 80px;"> ID </th>
+          <td mat-cell *matCellDef="let usuario" style="width: 80px;"> {{usuario.id}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="criacaoData">
+          <th mat-header-cell *matHeaderCellDef style="width: 100px;"> Data Cadastro </th>
+          <td mat-cell *matCellDef="let usuario" style="width: 100px;"> {{formatarData(usuario.criacaoData)}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="ramo">
+          <th mat-header-cell *matHeaderCellDef style="width: 100px;"> Ramo </th>
+          <td mat-cell *matCellDef="let usuario" style="width: 100px;"> {{formatarRamo(usuario.marketplaceRamoId)}}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="nome">
+          <th mat-header-cell *matHeaderCellDef style="width: 400px;">Empresa </th>
+          <td mat-cell *matCellDef="let usuario" style="width: 400px;"> {{usuario.nome}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="cpf">
+          <th mat-header-cell *matHeaderCellDef style="width: 150px;">CNPJ/CPF </th>
+          <td mat-cell *matCellDef="let usuario" style="width: 150px;"> {{formatarDoc(usuario.cpf)}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="qtdEntregasDia">
+          <th mat-header-cell *matHeaderCellDef style="width: 100px;">Qtd pedidos dia </th>
+          <td mat-cell *matCellDef="let usuario" style="width: 100px;"> {{usuario.qtdEntregasDia}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="email">
+          <th mat-header-cell *matHeaderCellDef>E-Mail </th>
+          <td mat-cell *matCellDef="let usuario"> {{usuario.email}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="telefone">
+          <th mat-header-cell *matHeaderCellDef>Telefone </th>
+          <td mat-cell *matCellDef="let usuario"> {{usuario.responsavelTelefone}}</td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;index as i">
+        </tr>
+
+      </table>
+    </div>
+
+    <div class="paginator-ctn">
+      <span (click)="irParaPagina(0)" *ngIf="pages && pages.length > 6 && paginaAtual > 6" class="page-item">
+        <mat-icon class="keyboard">keyboard_arrow_left</mat-icon>
+      </span>
+      <span (click)="irParaPagina(page)" *ngFor="let page of pages | slice: pagaRangeA: pagaRangeB" class="page-item"
+        [ngClass]="{'page-selected': page == paginaAtual}">{{(page + 1)}}</span>
+      <span (click)="irParaPagina(pages.length -1)" *ngIf="pages && pages.length > 6 && paginaAtual != pages.length -1"
+        class="page-item">
+        <mat-icon class="keyboard">keyboard_arrow_right</mat-icon>
+      </span>
+    </div>
+  </div>
+
+</div>
+
+<div *ngIf="showLoader" class="loader-ctn">
+  <mat-spinner></mat-spinner>
+</div>

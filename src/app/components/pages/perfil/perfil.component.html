@@ -1,0 +1,189 @@
+<div class="main-container">
+    <h2>Configurações da sua conta</h2>
+    <h3>Edite as informações do seu estabelecimento, precificação ou inclua uma nova unidade</h3>
+
+    <mat-divider></mat-divider>
+
+    <h2>Informações pessoais:</h2>
+    <form [formGroup]="personalData">
+        <mat-form-field class="lg-input">
+            <mat-label>Responsável:</mat-label>
+            <input matInput placeholder="Nome" formControlName="responsavelNome">
+        </mat-form-field>
+
+        <mat-form-field *ngIf="isMatriz == true">
+            <mat-label *ngIf="tipoPessoa == 'J'">CNPJ</mat-label>
+            <mat-label *ngIf="tipoPessoa == 'F'">CPF</mat-label>
+
+            <input *ngIf="tipoPessoa == 'J'" #cnpj matInput (ngModelChange)="validate(cnpj)" (blur)="checkCnpj(cnpj)"
+                [textMask]="{mask: cnpjmask}" formControlName="cnpj" placeholder="23.456.789/0001-01" required>
+
+            <mat-error *ngIf="companyData.controls.cnpj.hasError('jaExistente')">CPNJ já cadastrado</mat-error>
+            <mat-error *ngIf="companyData.controls.cnpj.hasError('cnpjInvalido')">Digite um CNPJ Válido</mat-error>
+            <mat-error *ngIf="companyData.controls.cnpj.hasError('required')">Informe um CNPJ</mat-error>
+
+            <input *ngIf="tipoPessoa == 'F'" #cnpj matInput (ngModelChange)="validaCpf(cnpj)" (blur)="checkCnpj(cnpj)"
+                [textMask]="{mask: cpfMask}" formControlName="cnpj" placeholder="000.000.000-00" required>
+
+            <mat-error *ngIf="personalData.controls.cnpj.hasError('jaExistente')">CPF já cadastrado</mat-error>
+            <mat-error *ngIf="personalData.controls.cnpj.hasError('cpfInvalido')">Digite um CPF Válido </mat-error>
+            <mat-error *ngIf="personalData.controls.cnpj.hasError('required')">Informe um CPF </mat-error>
+        </mat-form-field>
+
+        <mat-form-field>
+            <mat-label>Telefone</mat-label>
+            <input matInput [textMask]="{mask: phonemask}" formControlName="responsavelTelefone"
+                placeholder="(11) 48372354">
+        </mat-form-field>
+
+        <mat-form-field class="md-input">
+            <mat-label>Email:</mat-label>
+            <input matInput type="email" placeholder="Digite o Email" formControlName="email" (blur)="checkEmail()">
+            <mat-error
+                *ngIf="personalData.controls.email.hasError('email') && !personalData.controls.email.hasError('required')">
+                Digite um email válido
+            </mat-error>
+            <mat-error *ngIf="personalData.controls.email.hasError('jaExistente')">Email já cadastrado
+            </mat-error>
+
+            <mat-error *ngIf="personalData.controls.email.hasError('required')">Informe um email
+            </mat-error>
+        </mat-form-field>
+
+        <mat-form-field class="sm-input">
+            <input type="{{passWordType}}" matInput placeholder="Senha" formControlName="senha">
+            <mat-icon (click)="setPasswordView()" *ngIf="passWordType == 'text'" class="olhoSenha">
+                visibility
+            </mat-icon>
+            <mat-icon (click)="setPasswordView()" *ngIf="passWordType == 'password'" class="olhoSenha">
+                visibility_off
+            </mat-icon>
+        </mat-form-field>
+
+    </form>
+
+    <h2>Endereço:</h2>
+    <form [formGroup]="adressForm">
+        <mat-form-field class="lg-input">
+            <mat-label>Endereço:</mat-label>
+            <input id="enderecoGoogle" matInput placeholder="Nome" formControlName="endereco">
+        </mat-form-field>
+        <br>
+
+        <mat-form-field>
+            <mat-label>CEP:</mat-label>
+            <input matInput formControlName="cep" placeholder="Ex: loja 02">
+            <mat-error *ngIf="adressForm.controls.cep?.errors?.required">Digite o Cep</mat-error>
+        </mat-form-field>
+
+        <mat-form-field>
+            <mat-label>Complemento:</mat-label>
+            <input matInput formControlName="complemento" placeholder="Ex: loja 02">
+        </mat-form-field>
+    </form>
+    <!-- <button mat-button [routerLink]="'/multilojas'" class="add-store-btn">Adicionar Nova Loja</button> -->
+    <br>
+    <h2 class="pricing-lbl">Precificação:</h2>
+    <!-- <span (click)="showPricingForm = !showPricingForm" class="edit-btn">Editar <img class="edit-img" src="assets/img/edit.png" width="16" alt=""></span> -->
+
+    <br>
+    <!-- <form *ngIf="showPricingForm" [formGroup]="pricing" class="princing-form" > -->
+    <form [formGroup]="pricing" class="princing-form">
+        <h2>Mude a precificação a qualquer hora</h2>
+        <ng-template matStepLabel>Precificação</ng-template>
+        <mat-radio-group (change)="onSelectionChange($event)" aria-label="Select an option">
+            <mat-radio-button [checked]="pricingOption == '1'" value="1" class="input-radio">Por Raio</mat-radio-button>
+            <mat-radio-button [checked]="pricingOption == '2'" value="2" class="input-radio">Por Quilometragem
+            </mat-radio-button>
+            <mat-radio-button [checked]="pricingOption == '3'" value="3" class="input-radio">Valor fixo
+            </mat-radio-button>
+            <!-- <mat-radio-button *ngIf="companyArea == '1'" value="4" >Mercado Flex</mat-radio-button> -->
+            <!-- <mat-radio-button [checked]="pricingOption == '4'"  value="4" >Mercado Flex</mat-radio-button> -->
+        </mat-radio-group>
+
+
+        <!-- POR RAIO -->
+        <div *ngIf="pricingOption == '1'">
+            <h3>Defina um valor para entregas de até 3, 5 e acima de 7km</h3>
+            <mat-form-field class="sm-input">
+                <mat-label>Até 3km</mat-label>
+                <input matInput currencyMask [options]="currencyOption" min="0" formControlName="valor1"
+                    placeholder="R$ 0,00">
+            </mat-form-field>
+
+            <mat-form-field class="sm-input">
+                <mat-label>De 3-5km</mat-label>
+                <input matInput currencyMask [options]="currencyOption" formControlName="valor2" placeholder="R$ 0,00">
+            </mat-form-field>
+
+            <mat-form-field class="sm-input">
+                <mat-label>De 5-7km</mat-label>
+                <input matInput currencyMask [options]="currencyOption" formControlName="valor3" placeholder="R$ 0,00">
+            </mat-form-field>
+
+            <mat-form-field class="sm-input">
+                <mat-label>Acima de 7km</mat-label>
+                <input matInput currencyMask [options]="currencyOption" formControlName="valor4" placeholder="R$ 0,00">
+            </mat-form-field>
+        </div>
+
+        <!-- POR Quilometragem -->
+        <div *ngIf="pricingOption == '2'">
+            <h3>Insira um valor para cada kilometro rodado e pague de acordo com a distância até a entrega</h3>
+            <mat-form-field class="sm-input">
+                <mat-label>Valor Base</mat-label>
+                <input matInput min="0" currencyMask [options]="currencyOption" formControlName="valorBase"
+                    placeholder="R$ 0,00">
+            </mat-form-field>
+
+            <mat-form-field class="sm-input">
+                <mat-label>A cada KM</mat-label>
+                <input matInput min="0" currencyMask [options]="currencyOption" formControlName="valorKm"
+                    placeholder="R$ 0,00">
+            </mat-form-field>
+        </div>
+
+        <!-- VALOR FIXO -->
+        <div *ngIf="pricingOption == '3'">
+            <h3>Insira um valor fixo a entrega</h3>
+            <mat-form-field class="sm-input">
+                <mat-label>Valor Total Fixo</mat-label>
+                <input matInput currencyMask [options]="currencyOption" min="0" formControlName="valorTotal"
+                    placeholder="R$ 0,00">
+            </mat-form-field>
+        </div>
+
+        <!-- MERCADO FLEX -->
+        <div *ngIf="pricingOption == '4'">
+            <h3>Insira um valor fixo a entrega</h3>
+            <mat-form-field class="sm-input">
+                <mat-label>Adicional Fixo Chuva</mat-label>
+                <input matInput currencyMask [options]="currencyOption" min="0" formControlName="adicionalChuva"
+                    placeholder="R$ 0,00">
+            </mat-form-field>
+        </div>
+        <mat-divider></mat-divider>
+
+        <h3>O valor dinâmico será acrescentado no valor da entrega ao clicar em “Ativar dinâmica”.
+            Ative a dinâmica para garantir suas entregas em dias de chuva ou em horários de alta demanda</h3>
+
+        <mat-form-field>
+            <mat-label>Valor Dinâmica</mat-label>
+            <input matInput currencyMask [options]="currencyOption" formControlName="valorChuvaFixo"
+                placeholder="R$ 0,00">
+        </mat-form-field>
+    </form>
+
+    <mat-divider></mat-divider>
+
+    <div class="buttons-ctn">
+        <button (click)="cancelar()" class="cancel-btn">Cancelar</button>
+        <button type="submit" (click)="updateProfile()" [disabled]="!personalData.valid || !adressForm.valid"
+            class="default-next-btn">SALVAR</button>
+    </div>
+
+</div>
+
+<div *ngIf="showLoader" class="perfil-loader">
+    <mat-spinner></mat-spinner>
+</div>

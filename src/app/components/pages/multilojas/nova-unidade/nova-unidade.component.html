@@ -1,0 +1,156 @@
+<div class="main-container-dft">
+    <h1>Nova Unidade</h1>
+
+    <div>
+        <form [formGroup]="companyData" (ngSubmit)="sendToRegister()">
+            <mat-form-field>
+                <mat-label>Tipo do Estabelecimento</mat-label>
+                <mat-select formControlName="marketplaceRamoId">
+                    <mat-option [value]="1">Restaurante</mat-option>
+                    <mat-option [value]="2">E-commerce</mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field class="lg-input">
+                <mat-label>Nome do Estabelecimento:</mat-label>
+                <input matInput placeholder="Nome" formControlName="nome">
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label>Celular:</mat-label>
+                <input matInput #respPhone (keyup)="validateRespPhone(respPhone)" [textMask]="{mask: utils.phonemask}"
+                    placeholder="Ex: (11) 9878.." formControlName="telefone">
+            </mat-form-field>
+            <br>
+            <mat-form-field class="md-input">
+                <mat-label>Email:</mat-label>
+                <input matInput (keyup)="checkEmail()" type="email" placeholder="Digite o Email"
+                    formControlName="email">
+                <mat-error
+                    *ngIf="companyData.controls.email.hasError('email') && !companyData.controls.email.hasError('required')">
+                    Digite um email válido
+                </mat-error>
+                <mat-error *ngIf="companyData.controls.email.hasError('jaExistente')">Email já cadastrado
+                </mat-error>
+
+            </mat-form-field>
+            <mat-form-field class="lg-input">
+                <mat-label>Nome do Responsável:</mat-label>
+                <input matInput placeholder="Nome" formControlName="responsavelNome">
+            </mat-form-field>
+
+            <!-- <mat-form-field>
+                <mat-label>CNPJ</mat-label>
+                <input #cnpj matInput (ngModelChange)="validate(cnpj)" [textMask]="{mask: utils.cnpjmask}"
+                    formControlName="cnpj" placeholder="23.456.789/0001-01">
+            </mat-form-field> -->
+
+            <mat-form-field>
+                <mat-label>Telefone</mat-label>
+                <input matInput [textMask]="{mask: utils.phonemask}" formControlName="responsavelTelefone"
+                    placeholder="(11) 48372354">
+            </mat-form-field>
+
+            <mat-form-field>
+                <mat-label>Senha:</mat-label>
+                <input matInput type="password" placeholder="Digite a Senha" formControlName="senha">
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label>Confirme a Senha:</mat-label>
+                <input matInput type="password" placeholder="Digite a Senha" formControlName="confirmPassword">
+                <mat-error *ngIf="companyDataForm.confirmPassword?.errors?.required">Confirme a senha</mat-error>
+                <mat-error *ngIf="companyDataForm.confirmPassword?.errors?.mustMatch">As senhas não conferem</mat-error>
+            </mat-form-field>
+
+            <ng-template matStepLabel>Endereço da Empresa</ng-template>
+            <div [formGroup]="adressForm">
+
+                <mat-form-field class="lg-input">
+                    <mat-label>Pesquise o Endereço (Com número)</mat-label>
+                    <input (keyup)="validarEndereco()" id="enderecoNovaLoja" matInput formControlName="endereco"
+                        placeholder="Ex: Av Nove de Julho, 1090, São Paulo">
+                    <mat-error *ngIf="adressForm.controls.endereco.status == 'INVALID'">
+                        Digite um endereço com o número
+                    </mat-error>
+                </mat-form-field>
+                <mat-form-field>
+                    <mat-label>Complemento</mat-label>
+                    <input matInput formControlName="complemento" placeholder="Ex: loja 02">
+                </mat-form-field>
+
+                <mat-form-field [ngClass]="{'hide': !inputCep}">
+                    <mat-label>CEP</mat-label>
+                    <input matInput formControlName="cep" placeholder="Ex: loja 02">
+                    <mat-error *ngIf="adressForm.controls.cep?.errors?.required">Digite o Cep</mat-error>
+                </mat-form-field>
+                <br>
+            </div>
+            <div class="precificacaoContainer">
+                <mat-radio-group (change)="onSelectionChange($event)" aria-label="Select an option">
+                    <mat-radio-button value="1">Por Raio</mat-radio-button>
+                    <mat-radio-button checked value="2">Por Quilometragem</mat-radio-button>
+                    <mat-radio-button value="3">Valor fixo</mat-radio-button>
+                </mat-radio-group>
+
+                <!-- POR RAIO -->
+                <div *ngIf="pricingOption == '1'">
+                    <h3>Defina um valor para entregas de até 3, 5 e acima de 7km</h3>
+                    <mat-form-field class="sm-input">
+                        <mat-label>Até 3km</mat-label>
+                        <input matInput currencyMask [options]="currencyOption" min="0" formControlName="valor1"
+                            placeholder="R$ 0,00">
+                    </mat-form-field>
+
+                    <mat-form-field class="sm-input">
+                        <mat-label>De 3-5km</mat-label>
+                        <input matInput currencyMask [options]="currencyOption" formControlName="valor2"
+                            placeholder="R$ 0,00">
+                    </mat-form-field>
+
+                    <mat-form-field class="sm-input">
+                        <mat-label>De 5-7km</mat-label>
+                        <input matInput currencyMask [options]="currencyOption" formControlName="valor3"
+                            placeholder="R$ 0,00">
+                    </mat-form-field>
+
+                    <mat-form-field class="sm-input">
+                        <mat-label>Acima de 7km</mat-label>
+                        <input matInput currencyMask [options]="currencyOption" formControlName="valor4"
+                            placeholder="R$ 0,00">
+                    </mat-form-field>
+                </div>
+
+                <!-- POR Quilometragem -->
+                <div *ngIf="pricingOption == '2'">
+                    <h3>Insira um valor para cada quilômetro rodado e pague de acordo com a distância até a entrega</h3>
+                    <mat-form-field class="sm-input">
+                        <mat-label>Valor Base</mat-label>
+                        <input matInput min="0" currencyMask [options]="currencyOption" formControlName="valorBase"
+                            placeholder="R$ 0,00">
+                    </mat-form-field>
+
+                    <mat-form-field class="sm-input">
+                        <mat-label>A cada KM</mat-label>
+                        <input matInput min="0" currencyMask [options]="currencyOption" formControlName="valorKm"
+                            placeholder="R$ 0,00">
+                    </mat-form-field>
+                </div>
+
+                <!-- VALOR FIXO -->
+                <div *ngIf="pricingOption == '3'">
+                    <h3>Insira um valor fixo a entrega</h3>
+                    <mat-form-field class="sm-input">
+                        <mat-label>Valor Total Fixo</mat-label>
+                        <input matInput currencyMask [options]="currencyOption" min="0" formControlName="valorTotal"
+                            placeholder="R$ 0,00">
+                    </mat-form-field>
+                </div>
+            </div>
+
+            <div>
+                <button [disabled]="!companyData.valid" mat-button class="default-next-btn">Cadastrar</button>
+            </div>
+        </form>
+    </div>
+</div>
+<div *ngIf="showLoader" class="loader-ctn loader">
+    <mat-spinner></mat-spinner>
+</div>

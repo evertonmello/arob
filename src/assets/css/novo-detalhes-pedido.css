@@ -1,0 +1,144 @@
+
+
+.voltar {
+  width: 100%;
+  background-color: #ffca00;
+  color: #fff;
+  display: block;
+  padding: 5px 10px;
+  text-transform: uppercase;
+  font-weight: 700;
+}
+
+.voltar a i {
+  color: #fff;
+}
+
+.voltar span {
+  padding-left: 30px;
+}
+
+.foto-redonda {
+  width: 60px;
+  height: 60px;
+  border-radius: 30px;
+}
+
+#nome_entregador {
+  text-transform: capitalize;
+  display: inline-block;
+}
+
+span.desc-detalhe {
+  font-weight: 900;
+}
+
+span.dados-detalhe {
+  font-size: smaller;
+}
+
+span.dados-detalhe.telefone{
+  color: #ffca00;
+  text-decoration: underline;
+  font-weight: 600;
+}
+
+.distancia-titulo {
+  margin-top: 20px;
+}
+
+.vl {
+  margin-left: 50%;
+  /* margin-top: 75px; */
+  margin-bottom: 100px;
+  border-left: 3px solid grey;
+  height: 500px;
+}
+
+.circle {
+  width: 25px;
+  height: 25px;
+  -webkit-border-radius: 25px;
+  -moz-border-radius: 25px;
+  border-radius: 25px;
+  background: #ffca00;
+  color: #fff;
+  position: absolute;
+  margin-left: 27%;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+ul {
+ list-style: none;
+}
+
+.navSteps {
+  height: 100vh;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+
+}
+
+.navSteps ul {
+  padding-left: 50px;
+  position: relative;
+}
+
+.navSteps ul::after {
+  content: '';
+  position: absolute;
+  width: 3px;
+  height: calc(100% - 58px);
+  background: grey;
+  z-index: -1;
+  margin-top: 29px;
+}
+
+.navSteps ul li {
+  padding: 30px 0;
+  padding-left: 20px;
+}
+
+.navSteps ul li a {
+  text-decoration: none;
+  position: relative;
+  background: #3742DA;
+  font-size: 1.5rem;
+  line-height : 1rem;
+  font-weight: 500;
+}
+
+.navSteps ul li a::before {
+  content: '';
+  position: absolute;
+  background: red;
+  width: 18px;
+  height: 18px;
+  left: -42;
+  top: 50%;
+  transform: translateY(-50%);
+  border-radius: 50px;
+  border: 4px solid #3742DA;
+}
+
+.navSteps ul li a.active {
+  font-weight: 44440;
+}
+
+.navSteps ul li a.active::before {
+  background: #3742DA;
+}
+
+
+
+
+
+
+
+

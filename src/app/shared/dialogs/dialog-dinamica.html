@@ -1,0 +1,15 @@
+<h1 mat-dialog-title>{{data.dinamica? 'Dinâmica Ativada': 'Dinâmica Desativada'}}</h1>
+<div mat-dialog-content>
+  <h3 *ngIf="data.dinamica">
+    Agora o valor da sua corrida vai ter um adicional de R$ {{data.valor}} (Você pode
+    desativar a dinâmica a qualquer momento)
+  </h3>
+  <h3 *ngIf="!data.dinamica">
+    Agora foi removido o valor adicional de  R$ {{data.valor}} da sua corrida (Você pode
+    desativar a dinâmica a qualquer momento)
+  </h3>
+</div>
+<div mat-dialog-actions>
+  <!-- <button mat-button (click)="onNoClick()">CANCELAR</button> -->
+  <button mat-button [mat-dialog-close]="true" cdkFocusInitial>OK</button>
+</div>

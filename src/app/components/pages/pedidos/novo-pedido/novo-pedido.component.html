@@ -1,0 +1,131 @@
+<div class="main-container">
+    <div class="form">
+        <div class="form-container">
+            <h1>Olá, {{user?.nome}}</h1>
+            <h2>Bora fazer o seu pedido?</h2>
+            <div class="estabelecimento-box">
+                <mat-form-field class="estabelecimento-ctn">
+                    <mat-label>Estabelecimento</mat-label>
+                    <mat-select [(ngModel)]="lojaSelected" (selectionChange)="setEstabelecimento()"
+                        [(ngModel)]="lojaEmUso" name="perido">
+                        <mat-option [value]="user">{{user.nome}}(Matriz)</mat-option>
+                        <mat-option *ngFor="let loja of lojas" [value]="loja">{{loja.nome}}
+                        </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                <mottu-moto></mottu-moto>
+            </div>
+            <mat-checkbox *ngIf="mostrarMercadoFlex()" [checked]="marcarFlex(true)" [indeterminate]="marcarFlex(false)">
+              Mercado Flex
+            </mat-checkbox>
+            <div class="previa-valor-card" [ngClass]="{'ativo': valorPedido}">
+                <span>Valor da Corrida</span>
+                <span class="cifrao">R$ <span *ngIf="valorPedido"
+                        class="previa-valor-lbl">{{valoresPedidoRoteirizado[valoresPedidoRoteirizado.length -1] |
+                            currency: 'BRL' | brlCurrency}}</span>
+                    <span *ngIf="!valorPedido" class="previa-valor-lbl">00</span>
+                </span>
+            </div>
+
+            <mat-vertical-stepper [linear]="isLinear" #stepper [ngClass]="{'disabled': blockPedido}">
+                <mat-step *ngFor="let item of waypoints; let i = index" [editable]="false">
+                    <ng-template matStepLabel>
+                        <h3>Endereço de <span>{{ i == 0 ? 'Retirada': 'Entrega'}}</span> </h3>
+                        <strong>{{item.endereco}}</strong>
+                    </ng-template>
+                </mat-step>
+
+                <mat-step [stepControl]="dadosCliente" state="done">
+                    <form [formGroup]="dadosCliente" style="position: relative;">
+                        <button *ngIf="waypoints.length > 1" mat-button (click)="cancelarNovoEnd()" style="position: absolute;
+                            right: 33px;">
+                            <mat-icon>cancel</mat-icon>
+                        </button>
+
+                        <ng-template matStepLabel>
+                            <h3>Endereço de Entrega</h3>
+                        </ng-template>
+                        <mat-form-field>
+                            <mat-label>Número do Pedido</mat-label>
+                            <input matInput type="number" formControlName="numeroPedido" placeholder="01" required>
+                        </mat-form-field>
+                        <mat-form-field>
+                            <mat-label>Telefone</mat-label>
+                            <input #phone matInput (keyup)="setMask(phone)" [textMask]="{mask: phonemask}"
+                                formControlName="celular" placeholder="(11) 48372354" required>
+                        </mat-form-field>
+                        <mat-form-field class="lg-input">
+                            <mat-label>Nome do Cliente</mat-label>
+                            <input matInput placeholder="João da Silva" formControlName="nome" required>
+                        </mat-form-field>
+                        <mat-form-field class="lg-input">
+                            <mat-label>Pesquise o Endereço (Com número)</mat-label>
+                            <input type="text" id="endereco-novo-pedido" autocomplete="off" matInput
+                                formControlName="endereco" placeholder="Ex: Av Nove de Julho, 1090, São Paulo">
+                        </mat-form-field>
+                        <mat-progress-bar *ngIf="showEnderecoLoader" mode="indeterminate"></mat-progress-bar>
+
+                        <mat-form-field class="xs-input">
+                            <mat-label>Número</mat-label>
+                            <input matInput formControlName="numero">
+                        </mat-form-field>
+
+                        <mat-form-field class="sm-input">
+                            <mat-label>Bairro</mat-label>
+                            <input matInput formControlName="bairro">
+                        </mat-form-field>
+
+                        <mat-form-field class="sm-input">
+                            <mat-label>Cidade</mat-label>
+                            <input matInput formControlName="cidade">
+                        </mat-form-field>
+
+                        <mat-form-field class="xs-input">
+                            <mat-label>Estado</mat-label>
+                            <input matInput formControlName="estado">
+                        </mat-form-field>
+
+                        <mat-form-field>
+                            <mat-label>Complemento</mat-label>
+                            <input matInput formControlName="complemento" placeholder="Ex: loja 02">
+                        </mat-form-field>
+
+                        <mat-form-field [ngClass]="{'hide': !inputCep}">
+                            <mat-label>CEP</mat-label>
+                            <input matInput formControlName="cep" placeholder="Ex: loja 02">
+                            <mat-error *ngIf="dadosCliente.controls.cep?.errors?.required">Digite o Cep</mat-error>
+                        </mat-form-field>
+                    </form>
+                </mat-step>
+
+            </mat-vertical-stepper>
+
+        </div>
+        <div class="add-endereco-ctn">
+            <h3 (click)="addDestino()" class="add-endereco" [ngClass]="{'disabled': !dadosCliente.valid}"><img
+                    src="assets/img/plus.png" class="icon-plus" alt=""> Incluir novo endereço a esse pedido</h3>
+        </div>
+
+        <button (click)="criarPedido()" class="solicitar-btn" [ngClass]="{'available': dadosCliente.valid}">
+            <span>SOLICITAR ENTREGA</span>
+        </button>
+    </div>
+    <div class="map">
+        <agm-map [latitude]="enderecoRetirada.lat" [longitude]="enderecoRetirada.lng" [zoom]="15">
+            <agm-marker *ngIf="!showRoute" [latitude]="enderecoRetirada.lat" [longitude]="enderecoRetirada.lng"
+                [label]="'A'">
+            </agm-marker>
+            <agm-direction *ngIf="showRoute" [origin]="origin" [waypoints]="wayPointsMap" [destination]="dest">
+            </agm-direction>
+        </agm-map>
+    </div>
+</div>
+
+<div *ngIf="novoPedidoLoader" class="loader-ctn loader">
+    <mat-spinner></mat-spinner>
+</div>
+
+
+<div *ngIf="showLoader" class="loader-ctn loader">
+    <mat-spinner></mat-spinner>
+</div>

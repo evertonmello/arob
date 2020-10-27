@@ -1,0 +1,225 @@
+/* You can add global styles to this file, and also import other style files */
+
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: Lato;
+  background-color: #f2f3f5;
+}
+
+h1,
+h2,
+h3,
+h4,
+a,
+button,
+span {
+  font-family: Lato;
+  font-weight: 200;
+  font-style: normal;
+}
+
+h2 {
+  color: gray;
+}
+h3 {
+  font-size: 15px;
+}
+@font-face {
+  font-family: "Lato";
+  src: url("assets/fonts/Lato-Light.ttf") format("opentype");
+}
+
+.default-next-btn {
+  width: 180px;
+  height: 34px;
+  border-radius: 7px;
+  border: 0;
+  background-color: #ffc700;
+  margin-bottom: 15px !important;
+  margin-top: 15px !important;
+  outline: none;
+  transition: all 0.3s;
+  cursor: pointer;
+}
+
+.default-next-btn:hover {
+  background-color: rgb(218, 171, 0);
+  transition: all 0.3s;
+}
+.mat-toolbar.mat-primary {
+  background: #fff;
+  color: gray;
+}
+.mat-slide-toggle-bar {
+  background-color: gray !important;
+}
+
+.mat-slide-toggle.mat-checked:not(.mat-disabled) .mat-slide-toggle-bar {
+  background-color: #ffe88c !important;
+}
+
+.mat-slide-toggle.mat-checked:not(.mat-disabled) .mat-slide-toggle-thumb {
+  background-color: #ffca00 !important;
+}
+
+.cadastro-container {
+  .mat-step-icon-state-number,
+  .mat-step-icon,
+  .mat-step-icon-selected {
+    width: 16px !important;
+    height: 16px !important;
+    margin-top: 5px !important;
+  }
+
+  .mat-step-icon-content {
+    display: none !important;
+  }
+
+  .mat-step-header .mat-step-icon-selected,
+  .mat-step-header .mat-step-icon-state-done,
+  .mat-step-header .mat-step-icon-state-edit {
+    background-color: #ffe88c !important;
+  }
+}
+
+.mat-step-header .mat-step-icon-selected,
+.mat-step-header .mat-step-icon-state-done,
+.mat-step-header .mat-step-icon-state-edit {
+  background-color: #606162 !important;
+}
+
+.lg-input {
+  width: 400px;
+}
+.md-input {
+  width: 300px;
+}
+.sm-input {
+  width: 120px;
+}
+.xs-input {
+  width: 80px;
+}
+
+.menuitem,
+.mat-menu-item {
+  color: black !important;
+}
+
+.mat-radio-button.mat-accent .mat-radio-inner-circle {
+  background-color: #ffca00 !important;
+}
+
+.mat-radio-button.mat-accent.mat-radio-checked .mat-radio-outer-circle {
+  border-color: #ffca00 !important;
+}
+.mat-radio-button.mat-accent.mat-radio-checked .mat-radio-persistent-ripple {
+  border-color: #ffca00 !important;
+}
+mat-form-field {
+  margin-right: 10px;
+}
+
+mat-radio-group {
+  margin-bottom: 25px !important;
+}
+
+.mat-progress-spinner circle,
+.mat-spinner circle {
+  stroke: #ffcc00;
+}
+
+.main-container-dft {
+  padding: 0 20px 20px 20px;
+}
+.loader-ctn {
+  margin-left: auto;
+  margin-right: auto;
+  width: fit-content;
+  margin-top: 200px;
+}
+
+.mat-dialog-actions {
+  justify-content: flex-end;
+}
+
+.ng-pristine,
+.mat-focused {
+  .mat-form-field-ripple {
+    background-color: black !important;
+  }
+
+  .mat-form-field-label {
+    color: black !important;
+  }
+}
+
+.mat-tooltip {
+  font-size: 12px !important;
+}
+.recibo-container {
+  .mat-vertical-stepper-header {
+    pointer-events: none !important;
+  }
+}
+
+.mat-progress-bar-fill::after {
+  background-color: #ffca00 !important;
+}
+
+.mat-progress-bar-buffer {
+  background-color: #fff6d4 !important;
+}
+
+.default-avatar {
+  border-radius: 50%;
+}
+td {
+  position: relative !important;
+}
+
+.mat-checkbox-checked.mat-accent .mat-checkbox-ripple .mat-ripple-element {
+  opacity: 0.03 !important;
+  background-color: #ffcc00 !important;
+}
+
+.mat-checkbox-checked.mat-accent .mat-checkbox-background,
+.mat-checkbox-indeterminate.mat-accent .mat-checkbox-background {
+  background-color: #ffcc00;
+}
+
+.mat-select-arrow {
+  color: black !important;
+}
+
+.mat-primary .mat-option.mat-selected:not(.mat-option-disabled) {
+  color: black !important;
+}
+
+.md-drppicker .btn,
+.md-drppicker .btn:hover {
+  background-color: #ffcc00 !important;
+  color: black;
+}
+
+.md-drppicker .btn {
+  color: black !important;
+}
+
+.md-drppicker td.active,
+.md-drppicker td.active:hover {
+  background-color: #ffcc00 !important;
+  color: black;
+}
+
+.div-align {
+  text-align: center;
+}
+
+.div-align-left {
+  text-align: left;
+}

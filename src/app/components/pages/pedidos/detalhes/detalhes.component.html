@@ -1,0 +1,187 @@
+<mat-icon (click)="close()" class="icon-close">close</mat-icon>
+<div class="main-container-dft">
+
+    <div class="div-align-left">
+        <span class="span-detalhes">Detalhes do Pedido - {{numeroPedido}} </span>
+        <mat-icon matTooltipPosition="below" *ngIf="situacao" matTooltip="Aumentar o valor do frete para esta entrega"
+            class="info-icon-information">help</mat-icon>
+        <button *ngIf="situacao" (click)="aumentarFrete()" mat-button class="default-next-btn enviar-doc-btn">Aumentar o
+            frete</button>
+    </div>
+
+    <div class="detalhe">
+        <div *ngIf="pedido" class="info-column">
+            <div class="card header">
+                <h3 *ngIf="pedido" class="ticker"
+                    [ngClass]="{'aceito': pedido.situacaoNome == 'Aceito' ||  pedido.situacaoNome == 'Entregue',
+                 'nAceito':pedido.situacaoNome == 'nAceito', 'retirado':  pedido.situacaoNome == 'Retirado', 'criado': pedido.situacaoNome == 'Inicial','pendente':pedido.situacaoNome == 'Pendente' }">
+                    {{pedido.situacaoNome}}</h3>
+                <h3>Pedido</h3>
+                <h4>{{pedido?.codigoExterno}}</h4>
+            </div>
+            <div class="card">
+                <h3>Unidade</h3>
+                <h4>{{pedido?.vendedorNome}}</h4>
+            </div>
+            <div class="card footer">
+                <h3>Data</h3>
+                <h4>{{pedido?.criacaoData | date :'dd/MM/yyyy' }}</h4>
+            </div>
+        </div>
+        <!-- ESQUELETO -->
+        <div *ngIf="!pedido" class="info-column">
+            <div class="card header">
+                <div class="line-sklt sm"></div>
+                <div class="line-sklt"></div>
+            </div>
+            <div class="card">
+                <div class="line-sklt sm"></div>
+                <div class="line-sklt"></div>
+            </div>
+            <div class="card footer">
+                <div class="line-sklt sm"></div>
+                <div class="line-sklt"></div>
+            </div>
+        </div>
+
+
+        <div *ngIf="pedido" class="info-column">
+            <div class="card">
+                <img src="assets/img/default-profile.png" alt="" width="30" class="default-avatar image">
+                <h3>Entregador | Id: {{pedido?.entregadorId}}</h3>
+                <h4>{{ pedido?.entregadorNome || 'ND'}} </h4>
+                <a *ngIf="pedido.entregadorTelefone"
+                    href='https://api.whatsapp.com/send?phone=55${{pedido.entregadorTelefone}}'
+                    class="phone">{{ pedido?.entregadorTelefone }}</a>
+            </div>
+
+            <div class="card">
+                <h3>Valor</h3>
+                <h4 *ngIf="pedido?.valorCorrida">R$ {{ pedido.valorCorrida  | currency: 'BRL' | brlCurrency }}</h4>
+            </div>
+            <div class="card footer">
+                <h3>Hora do Pedido</h3>
+                <h4>{{pedido?.criacaoData | date :'HH:mm:ss' }}</h4>
+            </div>
+        </div>
+        <!-- ESQUELETO -->
+        <div *ngIf="!pedido" class="info-column">
+            <div class="card header">
+                <div class="line-sklt sm"></div>
+                <div class="line-sklt"></div>
+            </div>
+            <div class="card">
+                <div class="line-sklt sm"></div>
+                <div class="line-sklt"></div>
+            </div>
+            <div class="card footer">
+                <div class="line-sklt sm"></div>
+                <div class="line-sklt"></div>
+            </div>
+        </div>
+
+        <div *ngIf="pedido" class="info-column">
+            <div class="card">
+                <img src="assets/img/default-profile.png" alt="" width="30" class="default-avatar image">
+                <h3>Cliente</h3>
+                <h4>{{ pedido?.nome }}</h4>
+                <a *ngIf="pedido.telefone" href='https://api.whatsapp.com/send?phone=55${{pedido.telefone}}'
+                    class="phone">{{ pedido?.telefone }}</a>
+            </div>
+            <div class="card">
+                <h3>Tipo de Entrega</h3>
+                <h4>Único</h4>
+            </div>
+            <div class="card footer">
+                <h3>Hora da entrega</h3>
+                <h4 *ngIf="pedido?.situacaoNome == 'Entregue'">{{pedido?.eventos[2]?.criacaoData | date :'HH:mm:ss'}}
+                </h4>
+                <h4 *ngIf="pedido?.situacaoNome != 'Entregue'">- -</h4>
+            </div>
+        </div>
+        <!-- ESQUELETO -->
+        <div *ngIf="!pedido" class="info-column">
+            <div class="card header">
+                <div class="line-sklt sm"></div>
+                <div class="line-sklt"></div>
+            </div>
+            <div class="card">
+                <div class="line-sklt sm"></div>
+                <div class="line-sklt"></div>
+            </div>
+            <div class="card footer">
+                <div class="line-sklt sm"></div>
+                <div class="line-sklt"></div>
+            </div>
+        </div>
+    </div>
+    <div class="map-container">
+
+        <div [ngClass]="{'hide': !showMapa}">
+            <div id="mapaDetalhe" name="mapa" class="map"></div>
+            <div style="display: flex; justify-content: space-between;">
+                <div>
+                    <h3>Distância</h3>
+                    <h4>{{distancia}}</h4>
+                </div>
+                <div>
+                    <h3>Tempo total</h3>
+                    <h4>{{tempoDecorrido}}</h4>
+                </div>
+            </div>
+        </div>
+        <div *ngIf="!showMapa" class="pulse"></div>
+        <mat-vertical-stepper *ngIf="pedido" [linear]="false" #stepper>
+            <mat-step state="chat">
+                <ng-template matStepLabel>
+                    <span>Endereço Retirada</span>
+                    <h4>{{pedido?.vendedorRua + ', ' + pedido?.vendedorNumero + ', ' + pedido?.vendedorBairro + ', ' + pedido?.vendedorCidade}}
+                    </h4>
+                    <br>
+                    <label>{{pedido?.vendedorComplemento}}</label>
+                </ng-template>
+            </mat-step>
+            <mat-step state="chat">
+                <ng-template matStepLabel>
+                    <span>Endereço de entrega</span>
+                    <h4>{{pedido?.rua + ', ' + pedido?.numero + ', ' + pedido?.bairro + ', ' + pedido?.cidade}}</h4>
+                    <br>
+                    <label>{{pedido?.complemento}}</label>
+                </ng-template>
+            </mat-step>
+
+            <ng-template matStepperIcon="edit">A</ng-template>
+            <ng-template matStepperIcon="chat">B</ng-template>
+        </mat-vertical-stepper>
+
+        <mat-vertical-stepper *ngIf="!pedido" [linear]="false" #stepper>
+            <mat-step state="chat">
+                <ng-template matStepLabel>
+                    <div class="line-sklt"></div>
+                    <div class="line-sklt md"></div>
+                </ng-template>
+            </mat-step>
+            <mat-step state="chat">
+                <ng-template matStepLabel>
+                    <div class="line-sklt"></div>
+                    <div class="line-sklt md"></div>
+                </ng-template>
+            </mat-step>
+        </mat-vertical-stepper>
+        <br>
+
+        <div class="buttons">
+            <button (click)="cancelar()" mat-raised-button color="warn">Cancelar</button>
+            <button *ngIf="isAdmin" (click)="kickarEntregador()" mat-raised-button>Kickar Entregador</button>
+            <button *ngIf="isAdmin" (click)="finalizar()" mat-raised-button>Finalizar Pedido</button>
+        </div>
+
+        <div *ngIf="isAdmin" class="input-incluir">
+            <mat-form-field>
+                <mat-label>Incluir</mat-label>
+                <input [(ngModel)]="idEntregador" matInput placeholder="ID Entregador">
+            </mat-form-field>
+            <button (click)="incluir()" mat-raised-button>Incluir</button>
+        </div>
+    </div>
+</div>

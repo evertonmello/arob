@@ -1,0 +1,145 @@
+<div [formGroup]="documents" class="main-container" [ngClass]="{ block: cadastro }">
+  <div>
+    <mat-form-field *ngIf="isAdmin">
+      <mat-label>Selecione o usuário</mat-label>
+      <mat-select id="userSelected" formControlName="userSelected" (selectionChange)="recarregarDocumentos()"
+        msInfiniteScroll (infiniteScroll)="manageScroll()">
+        <input matInput (keyup)="_filter($event.target.value)" autocomplete="off" placeholder="Busque por nome"
+          class="select-input">
+        <!-- <mat-option [value]="null">TODOS</mat-option> -->
+        <mat-option *ngFor="let value of values | slice: 0:scollIndex * 80" [value]="value.Id">
+          {{ value.Id + " " + value.Nome }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <h1 *ngIf="!cadastro && !dadosBancario">
+    Complete seu cadastro e continue entregando
+  </h1>
+  <br />
+  <h3>
+    Documentos necessários para sua empresa gerar boleto e créditos na
+    plataforma.
+  </h3>
+  <span>Arquivos somente JPG e PDF até 3MB*</span>
+  <div class="input-container">
+    <img *ngIf="!documents.controls.cnh.value && !cnh" src="assets/img/upload-logo.png" alt="" height="60"
+      class="logo-upload" />
+    <img *ngIf="documents.controls.cnh.value || cnh" src="assets/img/upload-done.png" alt="" height="60"
+      class="logo-upload" />
+    <div class="text-container">
+      <h1 class="file-title">Documento de identificação</h1>
+      <h2 class="file-desc">
+        {{
+          documents.controls.cnh.value || cnh
+            ? cnh
+            : "Documento com foto ( RG, CNH ou CPF ) de um dos sócios"
+        }}
+      </h2>
+      <h2 *ngIf="cnhAlreadLoad && cnh" class="file-desc">
+        <!-- <span
+                    *ngIf="!zoopStatus.identificacaoZoop || zoopStatus.identificacaoZoop == 0  || zoopStatus.identificacaoZoop == 1"
+                    class="docInfo">
+                    <mat-icon class="analise">access_time
+                    </mat-icon>
+                    Em análise
+                </span> -->
+        <span *ngIf="zoopStatus.identificacaoZoop == 4" class="docInfo">
+          <mat-icon class="reprovado">cancel</mat-icon>
+          Reprovado
+        </span>
+        <span *ngIf="zoopStatus.identificacaoZoop == 5" class="docInfo">
+          <mat-icon class="aprovado">check_circle </mat-icon>
+          Aprovado
+        </span>
+      </h2>
+    </div>
+    <input id="cnh" formControlName="cnh" (change)="onFileSelect($event.target.files, 'cnh')" type="file" name=""
+      class="input-file-mottu" />
+    <img (click)="removeFile('cnh')" src="assets/img/garbg.png" class="garbage-icon" alt="" />
+  </div>
+
+  <div *ngIf="usuarioLogado.tipoPessoa == 'J'" class="input-container">
+    <img *ngIf="!documents.controls.endereco.value && !endereco" src="assets/img/upload-logo.png" alt="" height="60"
+      class="logo-upload" />
+    <img *ngIf="documents.controls.endereco.value || endereco" src="assets/img/upload-done.png" alt="" height="60"
+      class="logo-upload" />
+    <div class="text-container">
+      <h1 class="file-title">Comprovante de residência</h1>
+      <h2 class="file-desc">
+        {{
+          documents.controls.endereco.value || endereco
+            ? endereco
+            : "Comprovante no nome de um dos
+                sócios ou familiares"
+        }}
+      </h2>
+      <h2 *ngIf="enderecoAlreadLoad && endereco" class="file-desc">
+        <!-- <span
+                    *ngIf="!zoopStatus.comprovanteZoop || zoopStatus.comprovanteZoop == 0  || zoopStatus.comprovanteZoop == 1"
+                    class="docInfo">
+                    <mat-icon class="analise">access_time
+                    </mat-icon>
+                    Em análise
+                </span> -->
+        <span *ngIf="zoopStatus.comprovanteZoop == 4" class="docInfo">
+          <mat-icon class="reprovado">cancel</mat-icon>
+          Reprovado
+        </span>
+        <span *ngIf="zoopStatus.comprovanteZoop == 5" class="docInfo">
+          <mat-icon class="aprovado">check_circle </mat-icon>
+          Aprovado
+        </span>
+      </h2>
+    </div>
+    <input id="endereco" formControlName="endereco" (change)="onFileSelect($event.target.files, 'endereco')" type="file"
+      name="" class="input-file-mottu" />
+    <img (click)="removeFile('endereco')" src="assets/img/garbg.png" class="garbage-icon" alt="" />
+  </div>
+
+  <div *ngIf="usuarioLogado.tipoPessoa == 'J'" class="input-container">
+    <img *ngIf="!documents.controls.cartaoCnpj.value && !cartaoCnpj" src="assets/img/upload-logo.png" alt="" height="60"
+      class="logo-upload" />
+    <img *ngIf="documents.controls.cartaoCnpj.value || cartaoCnpj" src="assets/img/upload-done.png" alt="" height="60"
+      class="logo-upload" />
+    <div class="text-container cnpj">
+      <h1 class="file-title">Cartão CPNJ</h1>
+      <h2 class="file-desc">
+        {{
+          documents.controls.cartaoCnpj.value || cartaoCnpj
+            ? cartaoCnpj
+            : "Documento do CNPJ da empresa"
+        }}
+      </h2>
+      <h2 *ngIf="cnpjAlreadLoad && cartaoCnpj" class="file-desc">
+        <!-- <span *ngIf="!zoopStatus.cnpjZoop || zoopStatus.cnpjZoop == 0  || zoopStatus.cnpjZoop == 1"
+                    class="docInfo">
+                    <mat-icon class="analise">access_time
+                    </mat-icon>
+                    Em análise
+                </span> -->
+        <span *ngIf="zoopStatus.cnpjZoop == 4" class="docInfo">
+          <mat-icon class="reprovado">cancel</mat-icon>
+          Reprovado
+        </span>
+        <span *ngIf="zoopStatus.cnpjZoop == 5" class="docInfo">
+          <mat-icon class="aprovado">check_circle </mat-icon>
+          Aprovado
+        </span>
+      </h2>
+    </div>
+    <input id="cartaoCnpj" formControlName="cartaoCnpj" (change)="onFileSelect($event.target.files, 'cartaoCnpj')"
+      type="file" name="" class="input-file-mottu" />
+    <img (click)="removeFile('cartaoCnpj')" src="assets/img/garbg.png" class="garbage-icon" alt="" />
+  </div>
+</div>
+<a *ngIf="usuarioLogado.tipoPessoa == 'J'" href="https://servicos.receita.fazenda.gov.br/Servicos/cnpjreva/cnpjreva_solicitacao.asp" target="_blank">Gerar
+  Cartão CNPJ</a>
+
+<button (click)="sendFiles()" mat-button class="default-next-btn enviar-doc-btn">
+  Enviar Documentos
+</button>
+
+<div *ngIf="showLoader" class="loader-ctn loader">
+  <mat-spinner></mat-spinner>
+</div>

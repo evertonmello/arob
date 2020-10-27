@@ -1,0 +1,92 @@
+.historico {
+  width: 100%;
+}
+
+.filters {
+  float: right;
+}
+
+.detalhes-btn {
+  color: #ffcc00;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.lista {
+  width: 98%;
+  position: absolute;
+  bottom: 0;
+  top: 131px;
+  left: 10px;
+}
+
+.list-container {
+  overflow: auto;
+  width: 100%;
+  max-height: calc(100% - 70px);
+}
+
+.detalhe {
+  position: absolute;
+  right: 0;
+  top: 64px;
+  bottom: 0;
+  width: 60%;
+  background-color: #fff;
+  transition: 0.2s;
+  overflow: hidden;
+}
+.hide {
+  width: 0;
+  transition: 0.2s;
+}
+
+.mat-row:nth-child(even) {
+  background: #fff;
+}
+
+.mat-row:nth-child(odd) {
+  background: #fafafa;
+}
+
+td,
+th {
+  border: 1px solid transparent;
+  cursor: pointer;
+}
+
+th {
+  background-color: rgb(77, 77, 77);
+  color: white;
+}
+
+@media only screen and (max-width: 1270px) {
+  .detalhe {
+    position: absolute;
+    right: 0;
+    top: 45px;
+    bottom: 0;
+    width: 100%;
+    background-color: #fff;
+    transition: 0.2s;
+    overflow: hidden;
+  }
+
+  .hide {
+    width: 0;
+    transition: 0.2s;
+  }
+}
+
+.perfil-loader {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #ffffff63;
+  z-index: 5;
+  pointer-events: none;
+}

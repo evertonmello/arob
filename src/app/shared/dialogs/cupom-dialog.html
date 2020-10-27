@@ -1,0 +1,18 @@
+<h1>Insira seu Cupom</h1>
+<div mat-dialog-content>
+    <h2 mat-dialog-title>Você te um cupom de cadastro?</h2>
+    <span>Ative seu cupom e ganhe R$35,00 de bônus</span>
+    <mat-form-field>
+        <mat-label>Número do Cupom</mat-label>
+        <input matInput [(ngModel)]="cupom">
+    </mat-form-field>
+    <br>
+    <span *ngIf="message"><b>{{message}}</b> </span>
+    <br>
+    <mat-progress-bar *ngIf="showEnderecoLoader" mode="indeterminate"></mat-progress-bar>
+
+</div>
+<div mat-dialog-actions>
+    <button mat-button (click)="onNoClick()">Não tenho cupom :(</button>
+    <button mat-button (click)="validaCupom()" cdkFocusInitial>Ativar</button>
+</div>

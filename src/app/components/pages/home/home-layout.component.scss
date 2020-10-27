@@ -1,0 +1,132 @@
+.menu-container {
+  width: 100%;
+  padding: 0 20px;
+
+  button {
+    margin-left: 6px;
+    margin-right: 6px;
+  }
+}
+
+@media print {
+  .doNotPrint {
+    display: none !important;
+  }
+}
+.novo-pedido {
+  background-color: #ffcc00;
+  color: black;
+  margin-left: 12px;
+  transition: 0.3s;
+  border-radius: 5px;
+}
+.novo-pedido:hover {
+  background-color: rgb(207, 166, 0);
+  transition: 0.3s;
+}
+.ml-icon {
+  vertical-align: middle;
+  width: 40px;
+}
+.add-icon {
+  margin-bottom: 4px;
+}
+.mottu-toolbar {
+  background-color: black;
+}
+.dinamicBtn {
+  cursor: pointer;
+  float: right;
+  font-size: 15px;
+  color: gray;
+  margin-top: 15px;
+}
+button,
+a {
+  color: #fff;
+}
+
+.mat-slide-toggle-bar {
+  background-color: gray !important;
+}
+mat-toolbar {
+  padding: 0;
+}
+.logo {
+  vertical-align: -30%;
+  cursor: pointer;
+}
+
+.perfilBtn {
+  float: right;
+  margin-top: 6px;
+  padding-right: 0;
+}
+
+.sidenav {
+  height: 100%;
+  position: fixed;
+  background-color: black;
+  top: 0;
+  bottom: 0;
+  transition: 0.3s;
+  overflow: hidden;
+  width: 200px;
+  z-index: 5;
+
+  button {
+    display: block;
+    margin-top: 13px;
+  }
+}
+
+.sidenav:target {
+  width: 0;
+}
+
+.close-button {
+  float: right;
+}
+
+.hide {
+  width: 0;
+}
+
+.mottu-toolbar-side {
+  background-color: black;
+  display: none;
+  height: 45px;
+}
+
+.wallet {
+  display: inline;
+  margin-right: 20px;
+  padding: 5px;
+  border-radius: 3px;
+  background-color: #ffca00;
+  color: black;
+
+  &.ending {
+    background-color: #fc4141;
+  }
+}
+.saldo-txt {
+  background-color: black;
+  padding: 3px;
+  color: #fff;
+}
+
+.wallet-icon {
+  color: black;
+  vertical-align: -30%;
+}
+
+@media only screen and (max-width: 1270px) {
+  .mottu-toolbar {
+    display: none;
+  }
+
+  .mottu-toolbar-side {
+    display: block;
+  }
+}

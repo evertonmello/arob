@@ -1,0 +1,445 @@
+/*
+#707070
+#D5D5D5
+#13BA94*/
+
+body{
+	color: #707070;
+	font-family: 'Lato', helvetica, Arial, sans-serif;
+}
+
+
+h2 {
+    font-size: 1.3em;
+    font-weight: 700;
+}
+
+h1{
+    font-size: 29px;
+	display: block;
+	font-weight:700;
+}
+
+h5.active {
+    color:#ffca00;
+    font-weight: bold;
+}
+
+.image-container img {
+    height: 100%;
+    width: 100%;
+}
+
+.botao_cadastro {
+    width: 25%;
+    min-width: 150px;
+}
+
+.image-container {
+    height: 100vh !important;
+    max-width: 100%;
+    max-height: 100%;
+}
+
+@media (max-width: 767.98px) {
+    .image-container {
+        display: none;
+    }
+}
+
+.form-dadosbancarios {
+    width: 100%;
+}
+
+#div-login-container {
+    padding: 40px;
+}
+
+.btn-primary{
+	background-color:#ffca00 !important;
+}
+
+.btn-login {
+    width: 50%;
+    min-width: 120px;
+}
+
+.h1-login {
+    font-size: 32px;
+    color: #707070;
+    font-weight: 700;
+    font-family: "Lato";
+
+    text-align: left !important;
+    margin-left: 13px;
+}
+
+.ja-tenho-conta {
+    font-size: 18px;
+    color: #ffcc00 !important;
+    font-weight: 550;
+}
+
+#dinamica {
+    width: 150px;
+}
+
+
+a.nav-link {
+    color: #707070;
+	margin-right: 1em;
+}
+
+a, a:hover, li.nav-item.active a {
+    color: #ffca00;
+}
+
+.dropdown-item:hover {
+    color: #ffca00 !important;
+}
+
+a.link_cadastro {
+    display: block;
+    margin-top: 20px !important;
+    text-decoration: underline;
+}
+
+.form-login label {
+    font-size: 22px;
+    color: #707070;
+    font-weight: 500;
+    font-family: "Lato";
+}
+
+.busca {
+    background-color: #e6e6e6;
+    border-radius: 8px;
+    font-weight: 700;
+    color: #707070;
+    /* height: 1.8em; */
+    font-size: 14px;
+    /* padding: 10px 15px; */
+    border: 0px solid #707070;
+}
+
+.busca::placeholder {
+    color: #9B9B9B;
+}
+
+.principal-meio {
+    margin-top: 80px;
+}
+
+.saldo-positivo {
+    color: #707070;;
+    font-weight: 700;
+}
+
+.fundo-cinza{
+	background-color:#FBFBFB;
+}
+
+.verde{
+	color: #ffca00;
+}
+
+.no-padding-right{
+	padding-right: 0px !important;
+}
+
+.table thead th {
+    color: #666;
+	/* border */
+}
+
+tbody {
+    border: 1px solid #E0E0E0;
+}
+
+table.table thead {
+    background-color: #F7F7F7;
+    border-bottom-width: 0px !important;
+}
+
+.table th {
+    border-top: 0px;
+}
+
+.table td {
+    color: #707070;
+    font-weight: 700;
+}
+
+.table td a {
+    text-decoration: underline;
+	font-weight: 400;
+}
+
+.pagamento {
+    border: solid 1px #EDEDED;
+    border-radius: 20px;
+	padding-bottom: 4em;
+}
+
+btn.btn-primary{
+	border: 0px solid #707070;
+}
+
+button.btn.btn-primary {
+    border-width: 0px;
+}
+
+span.moeda {
+    font-size: 41px;
+    font-weight: 700;
+}
+
+span.valor {
+    font-size: 82px;
+    font-weight: 700;
+}
+
+.pagamento h5 {
+    font-weight: 700;
+
+}
+
+button.btn.btn-primary.btn-pagamento {
+    background-color: #fff !important;
+    color: #707070 !important;
+    border: solid 1px #707070;
+    padding: 30px 50px;
+    font-weight: 700;
+}
+
+ul.nav.nav-tabs li {
+    width: 33%;
+}
+
+ul.nav.nav-tabs li {
+    width: 33%;
+    padding-top: 1em !important;
+    padding-bottom: 1em !important;
+
+}
+
+ul.nav.nav-tabs li a {
+    color:#707070;
+    font-weight: 700
+}
+
+ul.nav.nav-tabs li.active a{
+    color:#ffca00;
+}
+
+li.nav-item.active a {
+    color:#ffca00 !important;
+    font-weight: bold;
+}
+
+li.nav-item a.active {
+    color:#ffca00 !important;
+    font-weight: bold;
+}
+
+a.dropdown-item.active {
+    color:#ffca00 !important;
+    background-color: #fff;
+}
+
+.tab-content {
+    width: 100%;
+    margin-top: 3em;
+}
+
+a.voltar {
+    width: 100%;
+    background-color: #ffca00;
+    color: #fff;
+    display: block;
+    padding: 5px 30px;
+    text-transform: uppercase;
+    font-weight: 700;
+}
+
+
+span.desc-detalhe {
+    font-weight: 700;
+}
+
+.info-pedido-principal {
+    border-bottom: 1px solid #D5D5D5;
+    padding: 1em 0em;
+}
+
+.borda-direita {
+    border-right: 1px solid #d5d5d5;
+}
+
+.elemento-entrega {
+    margin-bottom: 1em;
+    margin-top: 1.5em;
+}
+
+.row.detalhes-trajeto div {
+    margin-top: 2.5em;
+}
+
+#novo-pedido {
+    background: #ffca00;
+    color: white;
+    border-radius: 8px;
+    width: 100%;
+    padding: 8px;
+    text-align: center;
+}
+
+.btnAmarelo {
+    background: #ffca00;
+    color: white;
+    border-radius: 8px;
+    width: 100%;
+    padding: 8px;
+    text-align: center;
+}
+
+img.logo {
+    max-width: 180px;
+}
+
+.btn-primary {
+    border: 0px !important;
+	border-color: #ffca00 !important;
+}
+
+a.btn.disabled, fieldset:disabled a.btn, button.btn.disabled {
+    pointer-events: none;
+    background-color: #707070 !important;
+}
+
+ul.nav.nav-tabs li a.disabled {
+    color: #d5d5d5;
+    text-decoration: none;
+    pointer-events: none;
+}
+
+input:focus::placeholder {
+  color: transparent;
+}
+
+a.nav-link {
+    font-size: 0.95rem;
+}
+
+i.far.fa-check-circle {
+    color: green;
+}
+
+
+i.fal.fa-times-circle {
+    color: red;
+}
+
+/*** Modais de função altert ***/
+.novaModal{
+    width: 100%;
+    position: relative;
+    margin: auto;
+}
+.novaModalSm{
+    width: 65%;
+    position: relative;
+    margin: auto;
+}
+.modal-content{
+    border-radius:8px;
+    position: relative;
+    transform: translateY(80%); 
+
+}   
+.modal-title{
+   color:#FFFFFF;
+   font-weight: bold;
+   font-family: 'Lato', helvetica, Arial, sans-serif;
+}
+.modal-header{
+   background: #ffca00;
+   border-radius:8px;
+}
+.textBody{
+   font-size:24px;
+   color:darkgray;
+   text-align:center;
+   font-weight: bold;
+   font-family: 'Lato', helvetica, Arial, sans-serif;
+}
+.btModal{
+   color:#ffca00;
+   font-weight: bold;
+}
+.btModal:hover{
+   color:#ffca00;
+   font-weight: bold;
+   text-decoration: underline;
+}
+.modal-footer{
+   border:none;
+}
+.subText{
+   color:grey;
+   font-size:14px;
+   font-family: 'Lato', helvetica, Arial, sans-serif;
+}
+.subText2{
+   color:grey;
+   font-size:13px;
+   font-family: 'Lato', helvetica, Arial, sans-serif;
+}
+.iconWatch{
+   color:#ffca00;
+   margin-top:20px;
+   margin-bottom:10px;
+}
+.ftModal{
+    margin-top:-40px;
+}
+
+/*** Termina css das modais ****/
+
+/** Cor tabela - pedidos_andamento**/
+.table-striped > tbody > tr:nth-child(2n+1) > td, .table-striped > tbody > tr:nth-child(2n+1) > th {
+    background-color: #F4F6F7  ;
+ }
+/**Tratando menu popover**/
+ /* .arrow{
+     display: none !important;
+ } */
+ .bs-popover-right{
+    display: none !important;
+ }
+.list-group-item{
+    color:grey !important;
+}
+
+
+.overlay {
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    background: rgb(255, 255, 255);
+}
+
+.overlay__inner {
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    background-image: url("../img/loadingwaypoint.gif");  
+    background-position: center;
+    background-repeat: no-repeat;
+}
+

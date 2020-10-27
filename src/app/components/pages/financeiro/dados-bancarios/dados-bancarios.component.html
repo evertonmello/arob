@@ -1,0 +1,8 @@
+<div class="main-container">
+    <h1>Documentos</h1>
+    <h2 *ngIf="!isMatriz">Você só pode adicionar documentos pela conta matriz</h2>
+    <div class="docs-container" [ngClass]="{'dsblFile': !isMatriz}">
+        <file-picker [dadosBancario]="true"></file-picker>
+        <div *ngIf="!isMatriz" class="dsbl"> </div>
+    </div>
+</div>

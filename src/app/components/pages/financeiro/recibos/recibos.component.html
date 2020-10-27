@@ -1,0 +1,253 @@
+<div id="recibo" class="main-container-dft recibo-container">
+    <h1 *ngIf="!showDetail">Recibos das Entregas</h1>
+    <div *ngIf="!showDetail" class="option-ctn">
+
+        <input type="text" [linkedCalendars]="true" [locale]="locale" ngxDaterangepickerMd [(ngModel)]="selected"
+            class="calendar" placeholder="Selecione uma Data" />
+        <button (click)="buscaRecibos()" mat-button class="csv-button" style="float: unset;">Pesquisar</button>
+
+        <div class="busca-container">
+            <button (click)="downloadFile()" mat-button class="csv-button">EXPORTAR PARA XLS</button>
+            <button (click)="exportarTodosPdf()" mat-button class="csv-button">EXPORTAR COMO PDF</button>
+        </div>
+    </div>
+    <div *ngIf="!showDetail">
+        <table mat-table [dataSource]="recibos" class="mat-elevation-z8">
+
+            <ng-container matColumnDef="numero">
+                <th mat-header-cell *matHeaderCellDef> Id Pedido</th>
+                <td (click)="openItem(element)" mat-cell *matCellDef="let element">
+                    <span>{{element.numero}}</span>
+                </td>
+            </ng-container>
+
+
+            <ng-container matColumnDef="data">
+                <th mat-header-cell *matHeaderCellDef> Data</th>
+                <td (click)="openItem(element)" mat-cell *matCellDef="let element">
+                    <span>{{element.criacaoData | date :'dd/MM/yy'}}</span>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="valorCorrida">
+                <th mat-header-cell *matHeaderCellDef>Valor da Corrida</th>
+
+                <td (click)="openItem(element)" mat-cell *matCellDef="let element">
+                    <span>R${{element.valorCorrida |  currency: 'BRL' | brlCurrency}} </span>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="documento">
+                <th mat-header-cell *matHeaderCellDef>Documento Entregador</th>
+
+                <td (click)="openItem(element)" mat-cell *matCellDef="let element">
+                    <span>{{element.entregadorCpf}} </span>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="entregadorNome">
+                <th mat-header-cell *matHeaderCellDef>Nome Entregador</th>
+                <td (click)="openItem(element)" mat-cell *matCellDef="let element">
+                    <span>{{element.entregadorNome | abreviacao }} </span>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="endereco">
+                <th mat-header-cell *matHeaderCellDef>Endereço</th>
+                <td (click)="openItem(element)" mat-cell *matCellDef="let element">
+                    <span>{{element.rua}} </span>
+                </td>
+            </ng-container>
+
+
+            <ng-container matColumnDef="estorno">
+                <th mat-header-cell *matHeaderCellDef> Estorno </th>
+                <td (click)="openItem(element)" mat-cell *matCellDef="let element">
+                    <span><span *ngIf="element.temEstorno">R$</span>
+                        {{!element.temEstorno? ' - ' : element.valorCorrida |  currency: 'BRL' | brlCurrency}}
+                    </span>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="entregue">
+                <th mat-header-cell *matHeaderCellDef> Entregue </th>
+                <td (click)="openItem(element)" mat-cell *matCellDef="let element">
+                    <mat-icon *ngIf="element.situacaoNome == 'Entregue'" class="circle">check_circle</mat-icon>
+                    <mat-icon *ngIf="element.situacaoNome != 'Entregue'" class="circle info">info</mat-icon>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="detalhe">
+                <th mat-header-cell *matHeaderCellDef> Detalhe </th>
+                <td mat-cell *matCellDef="let element">
+                    <mat-icon class="icon-detalhes">keyboard_arrow_right</mat-icon>
+                </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr (click)="openItem(row)" mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+
+    </div>
+
+    <!-- DETALHES -->
+    <h3 *ngIf="showDetail" class="back doNotPrint">
+        <mat-icon (click)="backToTable()">keyboard_backspace</mat-icon><strong class="back-label">Voltar</strong>
+        <button (click)="download()" mat-button>Baixar</button>
+        <button (click)="print()" mat-button>Imprimir</button>
+    </h3>
+
+    <div *ngIf="pedidoSelected && showDetail && !printAll" id="reciboDownload" class="recibo">
+
+        <h2>Recibo de serviço de moto frete</h2>
+
+        <h4>Valor da entrega</h4>
+        <h4><strong>R$ {{pedidoSelected.valorCorrida |  currency: 'BRL' | brlCurrency}}</strong> </h4>
+
+        <mat-divider></mat-divider>
+
+        <div class="emissao-ctn">
+            <div>
+                <h4>Emitido por:</h4>
+                <h4><strong> {{!pedidoSelected.entregadorNome ? ' - ' : pedidoSelected.entregadorNome}}</strong></h4>
+            </div>
+            <div>
+                <h4>Para:</h4>
+                <h4><strong>{{!pedidoSelected.vendedorNome ? ' - ' : pedidoSelected.vendedorNome}}</strong> </h4>
+            </div>
+        </div>
+        <mat-divider></mat-divider>
+
+        <div class="emissao-ctn">
+            <div>
+                <h4><strong>CNPJ: {{pedidoSelected.entregadorCpf}}</strong></h4>
+            </div>
+            <div>
+                <h4><strong>MEI: {{!pedidoSelected.vendedorCpf ? ' - ' : pedidoSelected.vendedorCpf}}</strong> </h4>
+            </div>
+        </div>
+        <mat-divider></mat-divider>
+
+        <div class="emissao-ctn">
+            <div>
+                <h4>Nº Pedido: {{pedidoSelected.codigoExterno}}</h4>
+                <h4>Data: {{pedidoSelected?.criacaoData | date : 'dd/MM/yyyy'}}</h4>
+                <h4>Distância: {{pedidoSelected.entregaDistanciaKm}}</h4>
+            </div>
+            <div>
+                <h4>Id Bora Bora: {{pedidoSelected.id}}</h4>
+                <h4>Início: {{ pedidoSelected.eventos[0]?.criacaoData | date: 'dd/MM/yyyy HH:mm:ss'}}</h4>
+                <h4 *ngIf="!pedidoSelected.eventos[2]">Término: - </h4>
+                <h4 *ngIf="pedidoSelected.eventos[2]">Término:
+                    {{ pedidoSelected.eventos[2]?.criacaoData | date: 'dd/MM/yyyy HH:mm:ss'}}</h4>
+            </div>
+        </div>
+
+        <mat-divider></mat-divider>
+
+
+        <mat-vertical-stepper [linear]="isLinear" #stepper>
+            <mat-step [stepControl]="firstFormGroup" state="chat">
+                <form [formGroup]="firstFormGroup">
+                    <ng-template matStepLabel>
+                        <h3>Endereço Retirada</h3>
+                        <strong>{{pedidoSelected.vendedorRua + ', ' + pedidoSelected.vendedorNumero + ', '+ 
+                            pedidoSelected.vendedorBairro + ', ' +  pedidoSelected.vendedorCidade + ' - '+   pedidoSelected.vendedorEstado}}</strong>
+                    </ng-template>
+                </form>
+            </mat-step>
+            <mat-step [stepControl]="secondFormGroup" state="chat">
+                <form [formGroup]="secondFormGroup">
+                    <ng-template matStepLabel>
+                        <h3>Endereço de entrega</h3>
+                        <strong>{{pedidoSelected.rua + ', ' + pedidoSelected.numero + ', '+ 
+                            pedidoSelected.bairro + ', ' +  pedidoSelected.cidade + ' - '+   pedidoSelected.estado}}</strong>
+                    </ng-template>
+                </form>
+            </mat-step>
+
+            <ng-template matStepperIcon="edit">A</ng-template>
+            <ng-template matStepperIcon="chat">B</ng-template>
+        </mat-vertical-stepper>
+    </div>
+
+    <div *ngIf="printAll">
+        <div *ngFor="let recibo of recibos.data" id="reciboDownload" class="recibo">
+
+            <h2>Recibo de serviço de moto frete</h2>
+
+            <h4>Valor da entrega</h4>
+            <h4><strong>R$ {{recibo.valorCorrida |  currency: 'BRL' | brlCurrency}}</strong> </h4>
+
+            <mat-divider></mat-divider>
+
+            <div class="emissao-ctn">
+                <div>
+                    <h4>Emitido por:</h4>
+                    <h4><strong> {{!recibo.entregadorNome ? ' - ' : recibo.entregadorNome}}</strong>
+                    </h4>
+                </div>
+                <div>
+                    <h4>Para:</h4>
+                    <h4><strong>{{!recibo.vendedorNome ? ' - ' : recibo.vendedorNome}}</strong> </h4>
+                </div>
+            </div>
+            <mat-divider></mat-divider>
+
+            <div class="emissao-ctn">
+                <div>
+                    <h4><strong>CNPJ: {{recibo.entregadorCpf}}</strong></h4>
+                </div>
+                <div>
+                    <h4><strong>MEI: {{!recibo.vendedorCpf ? ' - ' : recibo.vendedorCpf}}</strong> </h4>
+                </div>
+            </div>
+            <mat-divider></mat-divider>
+
+            <div class="emissao-ctn">
+                <div>
+                    <h4>Nº Pedido: {{recibo.codigoExterno}}</h4>
+                    <h4>Data: {{recibo?.criacaoData | date : 'dd/MM/yyyy'}}</h4>
+                    <h4>Distância: {{recibo.entregaDistanciaKm}}</h4>
+                </div>
+                <div>
+                    <h4>Id Bora Bora: {{recibo.id}}</h4>
+                    <h4>Início: {{ recibo.eventos[0]?.criacaoData | date: 'dd/MM/yyyy HH:mm:ss'}}</h4>
+                    <h4 *ngIf="!recibo.eventos[2]">Término: - </h4>
+                    <h4 *ngIf="recibo.eventos[2]">Término:
+                        {{ recibo.eventos[2]?.criacaoData | date: 'dd/MM/yyyy HH:mm:ss'}}</h4>
+                </div>
+            </div>
+
+            <mat-divider></mat-divider>
+
+
+            <mat-vertical-stepper [linear]="isLinear" #stepper>
+                <mat-step [stepControl]="firstFormGroup" state="chat">
+                    <form [formGroup]="firstFormGroup">
+                        <ng-template matStepLabel>
+                            <h3>Endereço Retirada</h3>
+                            <strong>{{recibo.vendedorRua + ', ' + recibo.vendedorNumero + ', '+ 
+                                recibo.vendedorBairro + ', ' +  recibo.vendedorCidade + ' - '+   recibo.vendedorEstado}}</strong>
+                        </ng-template>
+                    </form>
+                </mat-step>
+                <mat-step [stepControl]="secondFormGroup" state="chat">
+                    <form [formGroup]="secondFormGroup">
+                        <ng-template matStepLabel>
+                            <h3>Endereço de entrega</h3>
+                            <strong>{{recibo.rua + ', ' + recibo.numero + ', '+ 
+                                recibo.bairro + ', ' +  recibo.cidade + ' - '+   recibo.estado}}</strong>
+                        </ng-template>
+                    </form>
+                </mat-step>
+
+                <ng-template matStepperIcon="edit">A</ng-template>
+                <ng-template matStepperIcon="chat">B</ng-template>
+            </mat-vertical-stepper>
+        </div>
+    </div>
+</div>
+
+<div *ngIf="showLoader" class="loader-ctn loader">
+    <mat-spinner></mat-spinner>
+</div>

@@ -1,0 +1,191 @@
+h3,
+h4 {
+  margin: 0;
+}
+h3 {
+  font-weight: 400;
+  font-size: 13px;
+}
+.card {
+  width: 500px;
+  height: 300px;
+  background-color: #fff;
+  margin: 10px 20px;
+  position: relative;
+  cursor: pointer;
+}
+
+.remover {
+  position: absolute;
+  bottom: 10px;
+  right: 0;
+}
+
+img {
+  margin-bottom: 15px;
+}
+
+.vazio-ctn {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+}
+
+.card-header {
+  height: 40px;
+  background-color: #333333;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  position: relative;
+}
+.card-title {
+  text-align: center;
+  font-size: 22px;
+  color: #fff;
+  line-height: 1.7;
+}
+
+.card-body {
+  padding: 15px;
+  display: flex;
+  flex-wrap: wrap;
+  height: 230px;
+  &.add {
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    justify-content: center;
+  }
+}
+
+.item {
+  width: 50%;
+  height: 25%;
+}
+
+.edit {
+  width: 100%;
+  text-align: right;
+  position: absolute;
+  right: 13px;
+  bottom: 13px;
+  text-decoration: underline;
+  color: #408aff;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.edit-icon {
+  font-size: 18px;
+  vertical-align: sub;
+}
+
+.card-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.select-container {
+  position: absolute;
+  left: 8px;
+  top: 10px;
+  display: flex;
+  cursor: pointer;
+}
+
+.use {
+  color: #ffca00;
+  line-height: 1.8;
+}
+.circle {
+  width: 20px;
+  height: 20px;
+  margin-right: 8px;
+  color: #ffca00;
+
+  &.disabled {
+    background-color: #fff;
+    border-radius: 50%;
+  }
+}
+
+.hide {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  background-color: #00000080;
+  height: 100%;
+  overflow: hidden;
+  bottom: 0;
+  z-index: 5;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: 0.9;
+  opacity: 0;
+  pointer-events: none;
+  -webkit-transition: opacity 100ms ease;
+  -moz-transition: opacity 100ms ease;
+  -o-transition: opacity 100ms ease;
+  transition: opacity 100ms ease;
+
+  &.showOverlay {
+    transition: 0.9;
+    opacity: 1;
+    pointer-events: all;
+  }
+}
+
+.buttons-container {
+  text-align: right;
+}
+button {
+  width: 120px;
+  margin: 0 20px;
+}
+
+.modal {
+  height: 300px;
+  width: 600px;
+  background-color: #fff;
+  opacity: 1;
+  z-index: 7;
+  border-radius: 10px;
+  padding: 35px;
+}
+
+.nova-unidade-ctn {
+  width: 70%;
+  margin-left: auto;
+  margin-right: auto;
+  background-color: #fff;
+  border-radius: 10px;
+  padding: 25px;
+  margin-top: 20px;
+  padding-bottom: 50px;
+}
+
+.loader {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  background-color: #ffffff4d;
+  pointer-events: none;
+  z-index: 3;
+}
+
+.voltar {
+  display: flex;
+  cursor: pointer;
+}

@@ -1,0 +1,74 @@
+b {
+  font-weight: 900;
+  color: black;
+}
+.contas-ctn {
+  margin: 30px auto 0 auto;
+}
+.items-container {
+  flex-wrap: wrap;
+  flex-direction: row;
+  width: 100%;
+  justify-content: center;
+  display: flex;
+
+  h3 {
+    margin: 0 0 3px 0;
+  }
+}
+.meli-link {
+  text-decoration: underline;
+  cursor: pointer;
+}
+.market-item {
+  width: 230px;
+  height: 230px;
+  background-color: #fff;
+  margin: 30px 70px 0 70px;
+  box-shadow: 0 1px 3px #c5c5c5;
+  border-radius: 12px;
+  text-align: center;
+  padding: 30px;
+  position: relative;
+  border: solid 20px rgba(0, 0, 0, 0);
+  border-top: 0;
+
+  &.add {
+    cursor: pointer;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+  }
+}
+
+.ver-mais {
+  position: absolute;
+  bottom: 1px;
+  right: 4px;
+  text-decoration: underline;
+  font-weight: bold;
+  color: #79c8fd;
+}
+b {
+  font-family: Verdana, Tahoma, "Trebuchet MS", "DejuVu Sans",
+    "Bitstream Vera Sans", sans-serif;
+}
+
+img {
+  border-radius: 14px;
+}
+
+.loader {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  background-color: #ffffff4d;
+  pointer-events: none;
+  z-index: 9;
+}

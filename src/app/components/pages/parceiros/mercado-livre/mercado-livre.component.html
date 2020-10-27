@@ -1,0 +1,130 @@
+<div class="main-container-dft" [ngClass]="{'dsbld': showLoader}">
+  <div style="position: relative;">
+    <h1>Pedidos Mercado Livre</h1>
+    <h3>Para criar um pedido roteirizado selecione os pedidos, clique em "Nova Rota" em seguida "Iniciar Pedido".
+      <mat-icon matTooltipPosition="above"
+        matTooltip="Selecione todos os pedidos disponíveis na listagem. Clique em Nova Rota. Os 5 endereços mais próximos irão formar a rota. Clique em solicitar entrega. Repita o processo quantas vezes precisar durante o dia, até finalizar todos os pedidos de entrega."
+        class="info-icon">help</mat-icon>
+    </h3>
+
+    <button (click)="rota()" class="rota">
+      <mat-icon class="add-icon">add_circle_outline</mat-icon>
+      NOVA ROTA
+    </button>
+  </div>
+  <!-- Ao selecionar todos pedidos disponíveis na listagem, serão escolhidos os 5 pedidos mais próximos para a roteirização... -->
+  <div class="lista">
+    <div class="list-container">
+      <table mat-table [dataSource]="pedidos" class="mat-elevation-z8 historico pedidos">
+
+        <ng-container matColumnDef="checkBox">
+          <th mat-header-cell *matHeaderCellDef>
+            <mat-checkbox (change)="$event ? masterToggle() : null" [checked]="selection.hasValue() && allSelected"
+              [indeterminate]="selection.hasValue() && !allSelected" [aria-label]="checkboxLabel()">
+            </mat-checkbox>
+          </th>
+          <td (click)="selection.toggle(row)" mat-cell *matCellDef="let row" [ngClass]="{'dsbld': row.pedidoId}"
+            disabled>
+            <mat-checkbox (click)="$event.stopPropagation()" (change)="$event ? selection.toggle(row) : null"
+              [checked]="selection.isSelected(row)" [aria-label]="checkboxLabel(row)">
+            </mat-checkbox>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="data">
+          <th mat-header-cell *matHeaderCellDef>Data </th>
+          <td mat-cell *matCellDef="let element"> {{element.dataCriacao | date :'dd/MM/yyyy' }} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="horario">
+          <th mat-header-cell *matHeaderCellDef>Horário </th>
+          <td mat-cell *matCellDef="let element"> {{element.dataCriacao | date :'HH:mm:ss' }} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="nMercadoLivre">
+          <th mat-header-cell *matHeaderCellDef> Nº de venda do Mercado </th>
+          <td mat-cell *matCellDef="let element;index as i">
+            {{ element.id }} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="entregaML">
+          <th mat-header-cell *matHeaderCellDef> Id de envio Meli </th>
+          <td mat-cell *matCellDef="let element"> {{element.vendaId}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="nBoraBora">
+          <th mat-header-cell *matHeaderCellDef> N BoraBora </th>
+          <td mat-cell *matCellDef="let element;index as i">
+            {{ element.pedidoId || '' }} </td>
+        </ng-container>
+
+
+        <!-- <ng-container matColumnDef="entregaAceita">
+          <th mat-header-cell *matHeaderCellDef> Entrega Aceita</th>
+          <td mat-cell *matCellDef="let element;index as i">
+            <mat-icon *ngIf="situacoes[i].e" class="check">check_circle</mat-icon>
+            <mat-icon *ngIf="!situacoes[i].e" class="cancel">cancel</mat-icon>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="entregaRetirada">
+          <th mat-header-cell *matHeaderCellDef> Entrega Retirada </th>
+          <td mat-cell *matCellDef="let element;index as i">
+            <mat-icon *ngIf="situacoes[i].e" class="check">check_circle</mat-icon>
+            <mat-icon *ngIf="!situacoes[i].e" class="cancel">cancel</mat-icon>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="entregaEntregue">
+          <th mat-header-cell *matHeaderCellDef> Entrega Entregue </th>
+          <td mat-cell *matCellDef="let element;index as i">
+            <mat-icon *ngIf="situacoes[i].e" class="check">check_circle</mat-icon>
+            <mat-icon *ngIf="!situacoes[i].e" class="cancel">cancel</mat-icon>
+          </td>
+        </ng-container> -->
+
+
+        <ng-container matColumnDef="detalhes">
+          <th mat-header-cell *matHeaderCellDef> Detalhe </th>
+          <td mat-cell *matCellDef="let element;index as i">
+            <mat-icon>keyboard_arrow_right</mat-icon>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr (click)="detalhePedido(row)" mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+    </div>
+    <div class="botton-flex">
+
+      <div class="botton-flex">
+        <button (click)="reprocessarPedidos()" class="btn-botton">
+          <mat-icon class="add-icon">cached</mat-icon>
+          REPROCESSAR PEDIDOS
+        </button>
+      </div>
+
+      <div class="botton-flex">
+        <mat-form-field class="md-input">
+          <mat-label>Número Venda:</mat-label>
+          <input matInput placeholder="Número Venda" [(ngModel)]="shipment" type="number" [maxLength]="11">
+        </mat-form-field>
+
+        <button (click)="processarShipment()" class="btn-botton">
+          <mat-icon class="add-icon">arrow_upward</mat-icon>
+          PROCESSAR VENDA
+        </button>
+      </div>
+    </div>
+
+  </div>
+  <!-- <div [ngClass]="{'hide': !vendaSelected}" class="detalhe">
+        <detalhes *ngIf="vendaSelected" (closeEvt)="vendaSelected = null" [ml]="true" [nPedido]="vendaSelected">
+        </detalhes>
+    </div> -->
+
+</div>
+
+<div *ngIf="showLoader" class="loader-ctn">
+  <mat-spinner></mat-spinner>
+</div>

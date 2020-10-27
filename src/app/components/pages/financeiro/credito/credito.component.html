@@ -1,0 +1,48 @@
+<div class="main-container-dft">
+    <h1>Crédito</h1>
+    <h2 *ngIf="!isMatriz">Você só pode adicionar crédito pela conta matriz</h2>
+
+    <mat-divider></mat-divider>
+    <div style="display: flex;justify-content: space-around;">
+        <div class="card" [ngClass]="{'disabled': !isMatriz}">
+            <div class="main-box">
+                <h2>SALDO ATUAL</h2>
+                <h1 *ngIf="showSaldo" class="saldo">
+                    <span class="cifrao">R$</span> {{saldo  | currency: 'BRL' | brlCurrency }}
+                </h1>
+
+                <mat-spinner *ngIf="!showSaldo" class="loader"></mat-spinner>
+            </div>
+
+            <div class="main-box">
+                <h2>Adicionar Crédito via boleto</h2>
+                <mat-form-field style="width: 80%;">
+                    <input matInput [(ngModel)]="boletoValor" min="0" max="10000" currencyMask
+                        [options]="currencyOption" placeholder="Valor total do boleto (Até R$ 10.000,00)"
+                        maxlength="12">
+                </mat-form-field>
+                <br>
+                <p>Taxa de emissão por boleto pago: <b>R$ 1,80</b></p>
+                <button (click)="gerarBoleto()" [disabled]="!boletoValor" mat-raised-button>Gerar Boleto</button>
+                <mat-spinner *ngIf="showLoaderBol" diameter="25"></mat-spinner>
+
+                <h3 *ngIf="barCode">Código de Barras: {{barCode}}</h3>
+                <button (click)="downloadBoleto()" mat-button *ngIf="barCode">Baixar Boleto</button>
+            </div>
+        </div>
+
+        <div class="card extrato">
+            <div>
+                <h2>Últimos Créditos</h2>
+            </div>
+            <div *ngFor="let extrato of extratos; let i=index"
+                style="display: flex;justify-content: space-between;">
+                <h3 class="extrato-item"> {{extrato.criacaoData | date :'dd/MM/yy'}}</h3>
+                <h3 class="extrato-item">{{extrato.valor | currency: 'BRL' | brlCurrency}}</h3>
+            </div>
+            <!-- <div [routerLink]="'/extrato'" class="mostrarMais">
+                Ver extrato completo
+            </div> -->
+        </div>
+    </div>
+</div>

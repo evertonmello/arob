@@ -1,0 +1,214 @@
+.filters {
+  float: right;
+}
+.add-icon {
+  vertical-align: middle;
+}
+
+h1 {
+  margin-bottom: 10px;
+}
+
+.dsbld {
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+.rota {
+  position: absolute;
+  top: 0;
+  right: 0;
+  border: 0;
+  background-color: #ffcc00;
+  width: 240px;
+  height: 35px;
+  border-radius: 5px;
+  box-shadow: 0 1px 3px #b9b9b9;
+  outline: none;
+  cursor: pointer;
+
+  transform: scale(1);
+  animation: pulse 2s infinite;
+}
+
+.btn-botton {
+  border: 0;
+  width: 240px;
+  height: 35px;
+  margin: 10px;
+  border-radius: 5px;
+  background-color: #ffcc00;
+  cursor: pointer;
+}
+
+.botton-flex {
+  margin: 5px;
+  display: flex;
+  justify-content: space-between;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(0.95);
+  }
+
+  70% {
+    transform: scale(1.1);
+  }
+
+  100% {
+    transform: scale(0.95);
+  }
+}
+.pedidos {
+  width: 100%;
+}
+
+.detalhes-btn {
+  cursor: pointer;
+}
+
+.select-input {
+  height: 52px;
+  padding-left: 15px;
+}
+
+.check {
+  color: #82d682;
+}
+
+.info-icon {
+  font-size: 17px;
+  cursor: pointer;
+  vertical-align: -16%;
+}
+
+.cancel {
+  color: #ff5d5d;
+}
+
+.lista {
+  width: 98%;
+  position: absolute;
+  bottom: 0;
+  top: 160px;
+  left: 10px;
+}
+.list-container {
+  overflow: auto;
+  width: 100%;
+  max-height: calc(100% - 70px);
+}
+.detalhe {
+  position: absolute;
+  right: 0;
+  top: 64px;
+  bottom: 0;
+  width: 50%;
+  background-color: #fff;
+  transition: 0.2s;
+  overflow: hidden;
+}
+
+.mat-row:nth-child(even) {
+  background: #fff;
+}
+
+.mat-row:nth-child(odd) {
+  background: #fafafa;
+}
+
+td,
+th {
+  border: 1px solid transparent;
+  cursor: pointer;
+}
+
+th {
+  background-color: rgb(77, 77, 77);
+  color: white;
+}
+
+.progress-bar {
+  width: calc(100% - 16px);
+  background-color: #13ba94;
+  height: 3px;
+  position: absolute;
+  top: 20px;
+  right: -4px;
+
+  &.gray {
+    background-color: #b9b9b9;
+  }
+
+  &.semi {
+    right: 40%;
+    width: calc(60% - 16px);
+  }
+
+  &.semi-g {
+    right: -5px;
+    width: calc(60% - 16px);
+    background-color: #b9b9b9;
+  }
+}
+.disabled-circle {
+  background-color: #b9b9b9;
+  height: 24px;
+  width: 23px;
+  border-radius: 50%;
+}
+.hide {
+  width: 0;
+  transition: 0.2s;
+}
+
+.saldo {
+  border-radius: 8px;
+  margin-left: auto;
+  margin-right: auto;
+  background-color: #ffbdb1;
+  height: 55px;
+  width: 80%;
+  box-shadow: 0px 1px 5px #afafaf;
+  padding: 8px;
+  margin-top: 10px;
+}
+
+.saldo-label {
+  font-size: 17px;
+  font-weight: bold;
+  color: black;
+  margin: 8px;
+}
+
+.add-saldo-link {
+  font-size: 13px;
+  float: right;
+  color: blue;
+  font-weight: bold;
+}
+
+.nova-entrega {
+  text-align: center;
+  margin-top: 120px;
+  cursor: pointer;
+}
+
+@media only screen and (max-width: 1270px) {
+  .detalhe {
+    position: absolute;
+    right: 0;
+    top: 45px;
+    bottom: 0;
+    width: 100%;
+    background-color: #fff;
+    transition: 0.2s;
+    overflow: hidden;
+  }
+
+  .hide {
+    width: 0;
+    transition: 0.2s;
+  }
+}

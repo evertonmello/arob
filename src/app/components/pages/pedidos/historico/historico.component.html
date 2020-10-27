@@ -1,0 +1,82 @@
+<div class="main-container-dft">
+    <div>
+        <h1>Histórico</h1>
+    </div>
+
+    <div class="lista">
+        <div class="filters">
+            <mat-form-field>
+                <mat-label>Selecione o Periodo</mat-label>
+                <mat-select [(ngModel)]="periodoSelected" (selectionChange)="buscaPorPeriodo()" name="perido">
+                    <mat-option *ngFor="let periodo of periodos" [value]="periodo.value">
+                        {{periodo.label}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <mat-form-field>
+                <mat-label>Selecione a situação</mat-label>
+                <mat-select [(ngModel)]="situacaoSelected" (selectionChange)="buscaPorPeriodo()" name="situacao">
+                    <mat-option *ngFor="let situacao of situacoes" [value]="situacao.value">
+                        {{situacao.label}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+        <div class="list-container">
+            <table mat-table [dataSource]="pedidos" class="mat-elevation-z8 historico">
+
+                <ng-container matColumnDef="estabelecimento">
+                    <th mat-header-cell *matHeaderCellDef> Estabelecimento </th>
+                    <td mat-cell *matCellDef="let element"> {{element.vendedorNome}} </td>
+                </ng-container>
+
+
+                <ng-container matColumnDef="horario">
+                    <th mat-header-cell *matHeaderCellDef> Horário </th>
+                    <td mat-cell *matCellDef="let element"> {{element.criacaoData | date :'dd/MM/yyyy HH:mm:ss' }} </td>
+                </ng-container>
+
+
+                <ng-container matColumnDef="nBorabora">
+                    <th mat-header-cell *matHeaderCellDef> Nº Bora Bora </th>
+                    <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="nEstabelecimento">
+                    <th mat-header-cell *matHeaderCellDef> Nº Estabelecimento </th>
+                    <td mat-cell *matCellDef="let element"> {{element.codigoExterno}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="origemPedido">
+                    <th mat-header-cell *matHeaderCellDef> Origem do Pedido </th>
+                    <td mat-cell *matCellDef="let element"> {{element.origemPedido || 'Estabelecimento'}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="situacao">
+                    <th mat-header-cell *matHeaderCellDef> Situação </th>
+                    <td mat-cell *matCellDef="let element"> {{element.situacao | situacao }} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="detalhes">
+                    <th mat-header-cell *matHeaderCellDef> </th>
+                    <td mat-cell *matCellDef="let element">
+                        <mat-icon>keyboard_arrow_right</mat-icon>
+                    </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr (click)="detalhePedido(row)" mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+        </div>
+    </div>
+
+    <div [ngClass]="{'hide': !pedidoSeleced}" class="detalhe">
+        <detalhes *ngIf="pedidoSeleced" (closeEvt)="pedidoSeleced = null" [nPedido]="pedidoSeleced"></detalhes>
+    </div>
+
+</div>
+
+<div *ngIf="showLoader" class="perfil-loader">
+    <mat-spinner></mat-spinner>
+</div>

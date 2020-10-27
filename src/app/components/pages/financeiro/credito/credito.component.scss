@@ -1,0 +1,54 @@
+.main-box {
+  text-align: center;
+  margin: 40px 0 100px 0;
+}
+
+.loader {
+  margin-left: auto;
+  margin-right: auto;
+}
+.disabled {
+  pointer-events: none;
+}
+.saldo {
+  font-size: 60px;
+  margin: 0;
+}
+mat-spinner {
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 5px;
+}
+.cifrao {
+  font-size: 20px;
+}
+button {
+  background-color: #ffcc00;
+}
+
+.card {
+  background-color: #fff;
+  width: 37%;
+  margin-top: 30px;
+  border-radius: 16px;
+  box-shadow: 0 1px 4px #cacaca;
+  height: 510px;
+  padding: 20px;
+  &.extrato {
+    position: relative;
+    overflow:auto;
+  }
+}
+
+.mostrarMais {
+  text-align: right;
+  position: absolute;
+  bottom: 20px;
+  right: 17px;
+  color: #ffca00;
+  cursor: pointer;
+}
+
+.extrato-item {
+  font-size: 18px;
+}

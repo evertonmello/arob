@@ -1,0 +1,87 @@
+<mat-toolbar class="mottu-toolbar doNotPrint">
+  <div class="menu-container">
+    <img src="assets/img/logo-home.png" alt="logo" width="120" class="logo">
+    <a mat-button [routerLink]="'/novo-pedido'" class="novo-pedido">
+      <mat-icon class="add-icon">add_circle_outline</mat-icon>
+      NOVO PEDIDO
+    </a>
+    <button mat-button [matMenuTriggerFor]="pedidos">PEDIDOS</button>
+    <mat-menu #pedidos="matMenu">
+      <button mat-menu-item [routerLink]="'/pedidos-andamento'">Pedidos</button>
+      <button mat-menu-item [routerLink]="'/historico'">Histórico</button>
+    </mat-menu>
+
+
+    <button mat-button [matMenuTriggerFor]="financeiro">FINANCEIRO</button>
+    <mat-menu #financeiro="matMenu">
+      <button mat-menu-item [routerLink]="'/credito'">CRÉDITO</button>
+      <!-- <button mat-menu-item [routerLink]="'/extrato'">EXTRATO</button> -->
+      <button mat-menu-item [routerLink]="'/dados-bancarios'">DOCUMENTOS</button>
+      <button mat-menu-item [routerLink]="'/recibos'">RECIBOS</button>
+    </mat-menu>
+
+    <button mat-button [routerLink]="'/multilojas'">MULTILOJAS</button>
+    <button mat-button [matMenuTriggerFor]="parceiros"> PARCEIROS</button>
+
+    <button *ngIf="isAdmin" mat-button [routerLink]="'/usuarios'">USUARIOS</button>
+
+    <mat-menu #parceiros="matMenu">
+      <button (click)="autenticaMercadoLivre()" mat-menu-item>
+        <img src="assets/img/ml.png" class="ml-icon" alt="">
+        Mercado Livre
+      </button>
+    </mat-menu>
+
+    <a mat-button class="perfilBtn">
+
+      <div (click)="credito()" class="wallet" [ngClass]="{'ending': saldo < 100}">
+        <span *ngIf="saldo" class="saldo-txt">R$ {{saldo  | currency: 'BRL' | brlCurrency}}</span>
+        <mat-icon class="wallet-icon">account_balance_wallet</mat-icon> +
+      </div>
+      <img [matMenuTriggerFor]="perfil" src="assets/img/profile.png" width="35" alt="perfil">
+    </a>
+    <mat-menu #perfil="matMenu">
+      <button mat-menu-item [routerLink]="'/perfil'">Perfil</button>
+      <button mat-menu-item [routerLink]="'/mercadolivre'">Integrações</button>
+      <button mat-menu-item (click)="logOut()">Sair</button>
+    </mat-menu>
+    <mat-slide-toggle *ngIf="ramoId == 1" (click)="setDinamica()" [(ngModel)]="isChecked" class="dinamicBtn">Dinâmica
+    </mat-slide-toggle>
+
+  </div>
+</mat-toolbar>
+
+
+
+<!-- MENU LATERIAL -->
+<mat-toolbar class="mottu-toolbar-side">
+  <button (click)="showSideMenu = true" mat-icon-button class="example-icon">
+    <mat-icon>menu</mat-icon>
+  </button>
+</mat-toolbar>
+
+<div (click)="setMenuView()" class="sidenav" [ngClass]="{'hide': !showSideMenu}">
+  <button mat-icon-button class="close-button">
+    <mat-icon>close</mat-icon>
+  </button>
+
+
+  <a mat-button [routerLink]="'/novo-pedido'" class="novo-pedido">
+    <mat-icon class="add-icon">add_circle_outline</mat-icon>
+    NOVO PEDIDO
+  </a>
+  <button mat-button [routerLink]="'/pedidos-andamento'">PEDIDOS EM ANDAMENTO</button>
+  <button mat-button [routerLink]="'/historico'">HISTÓRICO</button>
+  <button mat-button [routerLink]="'/credito'">CRÉDITO</button>
+  <!-- <button mat-button [routerLink]="'/extrato'">EXTRATO</button> -->
+  <button mat-button [routerLink]="'/dados-bancarios'">DOCUMENTOS</button>
+  <button mat-button [routerLink]="'/recibos'">RECIBOS</button>
+  <button mat-button [routerLink]="'/multilojas'">MULTILOJAS</button>
+  <button (click)="autenticaMercadoLivre();setMenuView()" mat-button>Mercado Livre</button>
+
+  <button mat-button [routerLink]="'/perfil'">Perfil</button>
+  <button mat-button [routerLink]="'/mercadolivre'">Integrações</button>
+  <button mat-button (click)="logOut()">Sair</button>
+</div>
+
+<router-outlet></router-outlet>

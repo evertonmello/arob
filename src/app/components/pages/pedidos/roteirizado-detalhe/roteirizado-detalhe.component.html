@@ -1,0 +1,134 @@
+<div class="main-container-dft">
+  <h1>Pedido Roteirizado Detalhe - {{ pedidoId }}</h1>
+
+  <div class="content">
+    <div class="content-item">
+      <div class="detalhe">
+        <div class="info-column">
+          <div class="card header">
+            <h3>Pedido</h3>
+            <h4>{{ pedido?.codigoExterno }}</h4>
+          </div>
+          <div class="card">
+            <h3>Distância</h3>
+            <h4>{{ pedido?.entregaDistancia }}km</h4>
+          </div>
+        </div>
+        <div class="info-column">
+          <div class="card">
+            <h3>Situação</h3>
+            <h4>{{ pedido?.situacaoNome }}</h4>
+          </div>
+
+          <div class="card footer">
+            <h3>Precificação</h3>
+            <select class="form-control" [value]="pedido?.precificacaoTipo" disabled>
+              <option value="1">Raio</option>
+              <option value="2">Quilometragem</option>
+              <option value="3">Fixo</option>
+              <option value="4">Integrado</option>
+            </select>
+          </div>
+        </div>
+        <div class="info-column">
+          <div class="card">
+            <!-- <img src="assets/img/default-profile.png" alt="" width="30" class="default-avatar image"> -->
+            <h3>Entregador</h3>
+            <h4>{{ pedido?.entregadorNome || "ND" }}</h4>
+            <h4 class="phone">{{ pedido?.entregadorTelefoneFormatado }}</h4>
+          </div>
+          <div class="card">
+            <h3>Valor</h3>
+            <h4 *ngIf="pedido?.valorCorrida">
+              R$ {{ pedido.valorCorrida | currency: "BRL" | brlCurrency }}
+            </h4>
+          </div>
+        </div>
+      </div>
+
+      <p *ngIf="pedido">Retirada: {{pedido.vendedorRua + ', ' + pedido.vendedorNumero + ', ' +  pedido.vendedorBairro 
+        + ', ' +  pedido.vendedorCidade  + ', ' +  pedido.vendedorEstado  + ' - '  + pedido.vendedorCep }}</p>
+
+      <mat-divider></mat-divider>
+
+      <div class="add-container">
+        <label for="">Adicionar Entrega:</label>
+
+        <mat-form-field class="sm-input">
+          <input matInput [(ngModel)]="entregaId" />
+        </mat-form-field>
+
+        <button (click)="addEntrega()" mat-raised-button [disabled]="pedido?.situacao != 80">
+          Adicionar
+        </button>
+      </div>
+
+      <mat-divider></mat-divider>
+
+      <div class="entregas-ctn">
+        <div *ngFor="let entrega of pedido?.entregas" class="route">
+          <mat-icon *ngIf="pedido?.situacao == 80 && pedido?.entregas.length > 1" (click)="removePedido(entrega)">close
+          </mat-icon>
+          <span class="entregaLbl">{{ entrega.idExterno }}
+            <span class="ticker a" [ngClass]="{
+                a: entrega.situacao == 0,
+                b: entrega.situacao == 10,
+                c: entrega.situacao == 20,
+                d: entrega.situacao == 30,
+                default: entrega.situacao == 50
+              }">
+              {{ ENTREGA_SITUACAO[pedidoSituacao] }}
+            </span>
+          </span>
+          <br />
+          {{
+            entrega.rua +
+              ", " +
+              entrega.numero +
+              ", " +
+              entrega.bairro +
+              ", " +
+              entrega.cidade +
+              ", " +
+              entrega.estado +
+              ", " +
+              entrega.complemento +
+              ", " +
+              entrega.cep
+          }}
+        </div>
+      </div>
+
+      <div class="buttons-container">
+        <div *ngIf="isAdmin" class="input-incluir">
+          <mat-form-field class="sm-input">
+            <mat-label>Incluir</mat-label>
+            <input [(ngModel)]="idEntregador" matInput placeholder="ID Entregador" />
+          </mat-form-field>
+          <button (click)="incluir()" mat-raised-button>Incluir</button>
+
+        </div>
+        <button *ngIf="isAdmin" (click)="finalizar()" mat-raised-button>Finalizar Pedido</button>
+
+        <button *ngIf="isAdmin" (click)="kickarEntregador()" mat-raised-button>
+          Kickar Entregador
+        </button>
+
+        <button *ngIf="pedido?.situacao == 80" (click)="iniciarPedido()" class="btnIniciar" mat-raised-button>
+          SOLICITAR ENTREGA
+        </button>
+        <button (click)="cancelarPedido()" mat-raised-button color="warn">
+          CANCELAR PEDIDO
+        </button>
+      </div>
+    </div>
+    <div class="content-item">
+      <div class="col-12 col-lg-6" id="mapa" name="mapa" class="default-map">
+      </div>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="showLoader" class="loader-ctn loader">
+  <mat-spinner></mat-spinner>
+</div>

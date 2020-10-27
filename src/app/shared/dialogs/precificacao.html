@@ -1,0 +1,83 @@
+<form [formGroup]="pricing" class="princing-form" >
+    <h2>Escolha a Precificação do Pedido</h2>
+    <ng-template matStepLabel>Precificação</ng-template>
+    <mat-radio-group  (change)="onSelectionChange($event)" aria-label="Select an option">
+        <mat-radio-button [checked]="pricingOption == '1'" value="1" class="input-radio">Por Raio</mat-radio-button>
+        <mat-radio-button [checked]="pricingOption == '2'" value="2"class="input-radio">Por Quilometragem</mat-radio-button>
+        <mat-radio-button [checked]="pricingOption == '3'" value="3"class="input-radio">Valor fixo</mat-radio-button>
+        <!-- <mat-radio-button *ngIf="companyArea == '1'" value="4" >Mercado Flex</mat-radio-button> -->
+        <!-- <mat-radio-button [checked]="pricingOption == '4'"  value="4" >Mercado Flex</mat-radio-button> -->
+    </mat-radio-group>
+ 
+
+    <!-- POR RAIO -->
+    <div *ngIf="pricingOption == '1'">
+        <h3>Defina um valor para entregas de até 3, 5 e acima de 7km</h3>
+        <mat-form-field class="sm-input">
+            <mat-label>Até 3km</mat-label>
+            <input matInput currencyMask [options]="currencyOption" min="0" formControlName="valor1"
+                placeholder="R$ 0,00">
+        </mat-form-field>
+
+        <mat-form-field class="sm-input">
+            <mat-label>De 3-5km</mat-label>
+            <input matInput currencyMask [options]="currencyOption" formControlName="valor2" placeholder="R$ 0,00">
+        </mat-form-field>
+
+        <mat-form-field class="sm-input">
+            <mat-label>De 5-7km</mat-label>
+            <input matInput currencyMask [options]="currencyOption" formControlName="valor3" placeholder="R$ 0,00">
+        </mat-form-field>
+
+        <mat-form-field class="sm-input">
+            <mat-label>Acima de 7km</mat-label>
+            <input matInput currencyMask [options]="currencyOption" formControlName="valor4" placeholder="R$ 0,00">
+        </mat-form-field>
+    </div>
+
+    <!-- POR Quilometragem -->
+    <div *ngIf="pricingOption == '2'">
+        <h3>Insira um valor para cada kilometro rodado e pague de acordo com a distância até a entrega</h3>
+        <mat-form-field class="sm-input">
+            <mat-label>Valor Base</mat-label>
+            <input matInput min="0" currencyMask [options]="currencyOption" formControlName="valorBase"
+                placeholder="R$ 0,00">
+        </mat-form-field>
+
+        <mat-form-field class="sm-input">
+            <mat-label>A cada KM</mat-label>
+            <input matInput min="0" currencyMask [options]="currencyOption" formControlName="valorKm"
+                placeholder="R$ 0,00">
+        </mat-form-field>
+    </div>
+
+    <!-- VALOR FIXO -->
+    <div *ngIf="pricingOption == '3'">
+        <h3>Insira um valor fixo a entrega</h3>
+        <mat-form-field class="sm-input">
+            <mat-label>Valor Total Fixo</mat-label>
+            <input matInput currencyMask [options]="currencyOption" min="0" formControlName="valorTotal"
+                placeholder="R$ 0,00">
+        </mat-form-field>
+    </div>
+
+    <!-- MERCADO FLEX -->
+    <div *ngIf="pricingOption == '4'">
+        <h3>Insira um valor fixo a entrega</h3>
+        <mat-form-field class="sm-input">
+            <mat-label>Adicional Fixo Chuva</mat-label>
+            <input matInput currencyMask [options]="currencyOption" min="0" formControlName="adicionalChuva"
+                placeholder="R$ 0,00">
+        </mat-form-field>
+    </div>
+    <mat-divider></mat-divider>
+
+    <h3>O valor dinâmico será acrescentado no valor da entrega ao clicar em “Ativar dinâmica”.
+        Ative a dinâmica para garantir suas entregas em dias de chuva ou em horários de alta demanda</h3>
+
+    <mat-form-field>
+        <mat-label>Valor Dinâmica</mat-label>
+        <input matInput currencyMask [options]="currencyOption" formControlName="valorChuvaFixo"
+            placeholder="R$ 0,00">
+    </mat-form-field>
+</form>

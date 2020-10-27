@@ -1,0 +1,25 @@
+<h1 mat-dialog-title class="div-align"><b>Aumentar valor da entrega atual</b></h1>
+<h3 class="div-align">Com o aumento do frete, você pode conseguir um entregador mais rápido para suas entregas</h3>
+
+<div mat-dialog-content class="div-align">
+  <mat-form-field class="sm-input">
+    <mat-label>Valor atual</mat-label>
+    <input matInput currencyMask [(ngModel)]="valorAtual" disabled='true' placeholder="R$ 0,00">
+  </mat-form-field>
+
+  <mat-form-field class="sm-input">
+    <mat-label>Novo valor</mat-label>
+    <input matInput currencyMask [(ngModel)]="novoValor" placeholder="R$ 0,00">
+  </mat-form-field>
+</div>
+<br>
+<div class="div-align">
+  <span *ngIf="message"><b>{{message}}</b> </span>
+</div>
+<br>
+<mat-progress-bar *ngIf="showEnderecoLoader" mode="indeterminate"></mat-progress-bar>
+
+<div class="div-align">
+  <button mat-button (click)="onNoClick()">Cancelar</button>
+  <button mat-button class="default-next-btn enviar-doc-btn" (click)="alterarFrete()">Alterar frete</button>
+</div>

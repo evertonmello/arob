@@ -1,0 +1,31 @@
+<div class="main-container-dft">
+    <h1>Contas Mercado Livre</h1>
+
+    <mat-divider></mat-divider>
+
+    <h2>Para adicionar mais de uma conta, faça logout no <b (click)="goToMercadoLivre()" class="meli-link">Mercado
+            Livre</b> caso esteja
+        logado.</h2>
+
+    <div class="items-container">
+        <div *ngFor="let conta of contas" class="market-item">
+            <img src="assets/img/mercadoenv.jpg" alt="" width="110" height="110">
+            <h3> <b>Id do Vendedor Mercado Livre:</b> {{conta.mlSellerId}}</h3><br>
+            <!-- <h3><b>Token Mercado Livre:</b> {{conta.mlToken}} </h3> -->
+            <h3><b>Válido até: </b> {{formatarData(conta.mlTokenExpires)}}</h3>
+            <h3 style="cursor: pointer;" *ngIf="tokenExpirado(conta.mlTokenExpires)" (click)="AtualizarToken(conta.mlSellerId)"><b>Atualizar</b></h3>
+
+        </div>
+    </div>
+
+    <div class="items-container">
+        <div class="market-item add" (click)="addConta()">
+            <img src="assets/img/nova-entrega.png" alt="">
+            Clique e adicione uma nova conta Mercado Livre
+        </div>
+    </div>
+</div>
+
+<div *ngIf="showLoader" class="loader-ctn loader">
+    <mat-spinner></mat-spinner>
+</div>

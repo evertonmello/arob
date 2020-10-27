@@ -1,0 +1,149 @@
+h1 {
+  color: white;
+  font-weight: normal;
+  font-size: 23px;
+}
+
+.login-form {
+  text-align: center;
+  width: 400px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+h2 {
+  font-size: 12px;
+  color: white;
+  float: right;
+}
+.main-container {
+  display: flex;
+  height: 100%;
+}
+
+.reset {
+  display: flex;
+  justify-content: space-between;
+  margin-left: auto;
+  margin-right: auto;
+}
+.logoHome {
+  width: 50%;
+  background-repeat: repeat-y;
+  background-image: url("/assets/img/pgs-img.png");
+}
+.loginContainer {
+  width: 50%;
+  display: flex;
+  align-items: center;
+  background-color: #f2f3f5;
+}
+
+.overlay-content {
+  height: 100%;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.88);
+  display: table;
+  text-align: center;
+  position: relative;
+}
+
+.contact-container {
+  position: absolute;
+  left: 12px;
+  bottom: 11px;
+}
+
+.olhoSenha {
+  position: absolute;
+  right: 0;
+  bottom: -4px;
+  font-size: 15px;
+  cursor: pointer;
+  color: #616161;
+}
+
+.resetSenhaLbl {
+  font-size: 12px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+
+  &.u {
+    text-decoration: underline;
+  }
+}
+
+.title-container {
+  display: table-cell;
+  vertical-align: middle;
+}
+.loginBox {
+  margin-left: auto;
+  margin-right: auto;
+  width: 80%;
+  &.c {
+    text-align: center;
+  }
+}
+
+.login-btn {
+  margin-top: 50px;
+  background-color: #bebebe;
+  color: #fff;
+  cursor: pointer;
+  width: 180px;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+}
+
+.enabled {
+  background-color: #ffcc00;
+  pointer-events: all;
+}
+
+.register-btn {
+  color: black;
+  text-align: center;
+  cursor: pointer;
+  margin-top: 15px;
+}
+.forgot-link {
+  float: right;
+  color: black;
+}
+mat-card-title {
+  text-align: center !important;
+  display: block;
+}
+
+.loader-container {
+  padding: 8px 0;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+p:last-child {
+  text-align: center;
+}
+
+.hide {
+  opacity: 0;
+}
+
+span:first-child {
+  cursor: pointer;
+  // text-decoration: underline;
+}
+
+@media only screen and (max-width: 700px) {
+  .loginContainer {
+    width: 100%;
+  }
+  .logoHome {
+    display: none;
+  }
+}

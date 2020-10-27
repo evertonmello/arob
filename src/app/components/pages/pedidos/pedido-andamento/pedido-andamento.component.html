@@ -1,0 +1,203 @@
+<div class="main-container-dft">
+    <div>
+        <h1>Pedidos</h1>
+    </div>
+
+    <div class="lista">
+
+
+        <div class="filters">
+            <div class="pedidos-info-container">
+                <h3 *ngIf="totalPedidos"> <span class="total"></span>{{totalPedidos}} Pedidos Listados </h3>
+                <h3 *ngIf="emAndamento"> <span class="andamento"></span>{{emAndamento}} Em andamento</h3>
+            </div>
+
+            <div>
+                <mat-form-field *ngIf="!isAdmin && isMatriz">
+                    <mat-label>Estabelecimento</mat-label>
+                    <mat-select [(ngModel)]="filialSelected" (selectionChange)="buscaFiltrada()" name="estabelecimento">
+                        <mat-option [value]="'0'">TODOS</mat-option>
+                        <mat-option [value]="currentUser.id">MATRIZ</mat-option>
+                        <mat-option *ngFor="let loja of lojas" [value]="loja.id">
+                            {{loja.nome}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+
+                <mat-form-field *ngIf="isAdmin">
+                    <mat-label>Usuário</mat-label>
+                    <mat-select [(ngModel)]="userSelected" (selectionChange)="buscaFiltrada()" msInfiniteScroll
+                        (infiniteScroll)="manageScroll()">
+                        <input matInput (keydown)="$event.stopPropagation()" (keyup)="_filter($event.target.value)"
+                            autocomplete="off" placeholder="Busque por nome" class="select-input">
+                        <mat-option [value]="null">TODOS</mat-option>
+                        <mat-option *ngFor="let value of values  | slice:0:(scollIndex*80)" [value]="value.Id">
+                            {{value.Id + ' ' + value.Nome}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+                <mat-form-field *ngIf="isAdmin">
+                    <mat-label>Estabelecimento</mat-label>
+                    <mat-select [(ngModel)]="estabelecimentoSelected" (selectionChange)="buscaFiltrada()" name="perido">
+                        <mat-option *ngFor="let estabelecimento of estabelecimentos" [value]="estabelecimento.value">
+                            {{estabelecimento.label}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+
+                <mat-form-field>
+                    <mat-label>Periodo</mat-label>
+                    <mat-select [(ngModel)]="periodoSelected" (selectionChange)="buscaFiltrada()" name="perido">
+                        <mat-option *ngFor="let periodo of periodos" [value]="periodo.value">
+                            {{periodo.label}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+                <mat-form-field>
+                    <mat-label>Situação</mat-label>
+                    <mat-select [(ngModel)]="situacaoSelected" (selectionChange)="buscaFiltrada()" name="situacao">
+                        <mat-option *ngFor="let situacao of situacoes" [value]="situacao.value">
+                            {{situacao.label}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+
+        </div>
+        <div class="list-container">
+            <table *ngIf="!showLoader" mat-table [dataSource]="pedidos" class="mat-elevation-z8 historico pedidos">
+
+                <ng-container *ngIf="isAdmin" matColumnDef="origem">
+                    <th mat-header-cell *matHeaderCellDef style="width: 80px;">Origem </th>
+                    <td mat-cell *matCellDef="let pedido" style="width: 80px;">
+                        <img *ngIf="!pedido.origem || pedido.origem == 'borabora'" src="assets/img/loja.png" width="30"
+                            alt="">
+                        <img *ngIf="pedido.origem == 'MERCADOLIVRE'" src="assets/img/ml.png" width="30" alt="">
+                        <img *ngIf="pedido.origem == 'IFOOD'" src="assets/img/ifood.png" width="30" alt="">
+                        <img *ngIf="pedido.origem == 'DELIVERYDIRETO'" src="assets/img/deliverydireto.png" width="30"
+                            alt="">
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="idPedido">
+                    <th mat-header-cell *matHeaderCellDef style="width: 80px;"> ID Bora Bora </th>
+                    <td mat-cell *matCellDef="let pedido" style="width: 80px;"> {{pedido.id}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="nBorabora">
+                    <th mat-header-cell *matHeaderCellDef> Nº Pedido </th>
+                    <td mat-cell *matCellDef="let pedido"> {{pedido.codigoExterno}} </td>
+                </ng-container>
+
+
+                <ng-container matColumnDef="entregador">
+                    <th mat-header-cell *matHeaderCellDef>Entregador </th>
+                    <td mat-cell *matCellDef="let pedido">
+                        <b>{{pedido.entregadorNome || ' - -'}}</b>
+                        <span class="time-lbl">{{pedido.entregadorId}}</span>
+                    </td>
+                </ng-container>
+
+
+                <ng-container matColumnDef="estabelecimento">
+                    <th mat-header-cell *matHeaderCellDef> Estabelecimento </th>
+                    <td mat-cell *matCellDef="let pedido"> {{pedido?.vendedorId + ' - ' + pedido.vendedorNome}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="tempoDecorrido">
+                    <th mat-header-cell *matHeaderCellDef> Tempo Decorrido </th>
+                    <td mat-cell *matCellDef="let pedido;index as i">
+                        {{ pedido.tempoDecorridoFormatado }} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="pedidoAceito">
+                    <th mat-header-cell *matHeaderCellDef fxFlex="60px"> Aceito </th>
+                    <td mat-cell fxFlex="60px" *matCellDef="let pedido">
+                        <mat-icon *ngIf="getSituacao(pedido.situacao, 'pedido_aceito')"
+                            [ngClass]="{'green-circle': !pedido.coletaAtrasada || pedido.coletaAtrasada && !isAdmin, 'red-circle': pedido.coletaAtrasada && isAdmin }">
+                            check_circle</mat-icon>
+                        <div *ngIf="!getSituacao(pedido.situacao, 'pedido_aceito')" class="disabled-circle"></div>
+                        <div class="progress-bar"
+                            [ngClass]="{'gray': !getSituacao(pedido.situacao, 'pedido_aceito'), 'semi': getSituacao(pedido.situacao, 'pedido_aceito') &&
+                             !getSituacao(pedido.situacao, 'pedido_retirado'), 'red-line': pedido.coletaAtrasada && isAdmin }">
+                        </div>
+                        <div *ngIf="getSituacao(pedido.situacao, 'pedido_aceito') && !getSituacao(pedido.situacao, 'pedido_retirado')"
+                            class="progress-bar semi-g"></div>
+                        <span *ngIf="pedido.eventos.length > 0 &&  pedido.situacao >= 10"
+                            class="time-lbl">{{pedido.datasCorridas[0] | date : 'HH:mm'}}</span>
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="pedidoRetirado">
+                    <th mat-header-cell *matHeaderCellDef> Retirado </th>
+                    <td mat-cell *matCellDef="let pedido">
+                        <mat-icon *ngIf="getSituacao(pedido.situacao, 'pedido_retirado')" style="color: #13BA94;">
+                            check_circle</mat-icon>
+                        <div *ngIf="!getSituacao(pedido.situacao, 'pedido_retirado')" class="disabled-circle"></div>
+                        <div class="progress-bar"
+                            [ngClass]="{'gray': !getSituacao(pedido.situacao, 'pedido_retirado'), 'semi': getSituacao(pedido.situacao, 'pedido_retirado') && !getSituacao(pedido.situacao, 'pedido_entregue') }">
+                        </div>
+                        <div *ngIf="getSituacao(pedido.situacao, 'pedido_retirado') && !getSituacao(pedido.situacao, 'pedido_entregue')"
+                            class="progress-bar semi-g"></div>
+                        <span *ngIf="pedido.eventos.length > 1  &&  pedido.situacao >= 20"
+                            class="time-lbl">{{pedido.datasCorridas[1] | date : 'HH:mm'}}</span>
+
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="pedidoEntregue">
+                    <th mat-header-cell *matHeaderCellDef> Entregue </th>
+                    <td mat-cell *matCellDef="let pedido">
+                        <mat-icon *ngIf="getSituacao(pedido.situacao, 'pedido_entregue')" style="color: #13BA94;">
+                            check_circle</mat-icon>
+                        <div *ngIf="!getSituacao(pedido.situacao, 'pedido_entregue')" class="disabled-circle"></div>
+                        <span *ngIf="pedido.eventos.length > 2  &&  pedido.situacao >= 30"
+                            class="time-lbl">{{pedido.datasCorridas[2] | date : 'HH:mm'}}</span>
+                        <span *ngIf="isAdmin && pedido.eventos.length <= 2  &&  pedido.situacao >= 30" class="time-lbl">
+                            finalizado manualmente</span>
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="detalhes">
+                    <th mat-header-cell *matHeaderCellDef> </th>
+                    <td mat-cell *matCellDef="let pedido">
+                        <a routerLink="/pedido-detalhe/{{pedido.id}}">
+                            <span class="detalhes-btn">
+                                Detalhes
+                            </span>
+                        </a>
+                    </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr (click)="detalhePedido(row)" mat-row *matRowDef="let row; columns: displayedColumns;index as i">
+                </tr>
+            </table>
+        </div>
+
+        <div class="paginator-ctn">
+            <span (click)="irParaPagina(0)" *ngIf="pages && pages.length > 6 && paginaAtual > 6" class="page-item">
+                <mat-icon class="keyboard">keyboard_arrow_left</mat-icon>
+            </span>
+            <span (click)="irParaPagina(page)" *ngFor="let page of pages | slice: pagaRangeA: pagaRangeB"
+                class="page-item" [ngClass]="{'page-selected': page == paginaAtual}">{{(page + 1)}}</span>
+            <span (click)="irParaPagina(pages.length -1)"
+                *ngIf="pages && pages.length > 6 && paginaAtual != pages.length -1" class="page-item">
+                <mat-icon class="keyboard">keyboard_arrow_right</mat-icon>
+            </span>
+        </div>
+    </div>
+    <!-- <div [ngClass]="{'hide': !pedidoSeleced}" class="detalhe"> -->
+    <div [ngClass]="{'hide': !pedidoSeleced}" class="detalhe">
+        <detalhes *ngIf="pedidoSeleced" (closeEvt)="closeDetalhes()" [nPedido]="pedidoSeleced"></detalhes>
+    </div>
+
+
+</div>
+
+<div *ngIf="showLoader" class="loader-ctn">
+    <mat-spinner></mat-spinner>
+</div>
